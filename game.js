@@ -1,4 +1,4 @@
-// TANKS // NEON WARFARE - УМНЫЕ ВРАГИ
+// TANKS // NEON WARFARE - ПОЛНАЯ ВЕРСИЯ С МОБИЛЬНЫМ УПРАВЛЕНИЕМ
 // -----------------------------------------------------
 
 // --- 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
@@ -20,145 +20,70 @@ const shopMoneySpan = document.getElementById('shop-money');
 
 // Данные кампании (15 уровней)
 const campaignLevels = [
-    {
-        id: 1,
-        name: "Тренировка",
-        hasBase: true,
-        tasks: [
-            { type: "kill", target: 5, reward: 50, description: "Убить 5 врагов" },
-            { type: "destroyBase", target: 1, reward: 100, description: "Уничтожить базу врага" }
-        ]
-    },
-    {
-        id: 2,
-        name: "Быстрые твари",
-        hasBase: false,
-        tasks: [
-            { type: "killFast", target: 3, reward: 75, description: "Убить 3 быстрых врага (желтых)" },
-            { type: "survive", target: 60, reward: 100, description: "Выжить 60 секунд" }
-        ]
-    },
-    {
-        id: 3,
-        name: "Тяжелая броня",
-        hasBase: true,
-        tasks: [
-            { type: "killTank", target: 2, reward: 100, description: "Убить 2 танка (фиолетовых)" },
-            { type: "noBaseDamage", target: 0, reward: 150, description: "База не должна получить урон" }
-        ]
-    },
-    {
-        id: 4,
-        name: "Точная стрельба",
-        hasBase: false,
-        tasks: [
-            { type: "accuracy", target: 70, reward: 120, description: "Точность стрельбы 70%" },
-            { type: "kill", target: 10, reward: 100, description: "Убить 10 врагов" }
-        ]
-    },
-    {
-        id: 5,
-        name: "Массовая атака",
-        hasBase: false,
-        tasks: [
-            { type: "kill", target: 15, reward: 150, description: "Убить 15 врагов" },
-            { type: "noDeaths", target: 0, reward: 200, description: "Не потерять ни одной жизни" }
-        ]
-    },
-    {
-        id: 6,
-        name: "Ночной кошмар",
-        hasBase: false,
-        tasks: [
-            { type: "survive", target: 90, reward: 150, description: "Выжить 90 секунд" },
-            { type: "kill", target: 12, reward: 120, description: "Убить 12 врагов" }
-        ]
-    },
-    {
-        id: 7,
-        name: "Элитный отряд",
-        hasBase: false,
-        tasks: [
-            { type: "killTank", target: 3, reward: 150, description: "Убить 3 танка" },
-            { type: "killFast", target: 4, reward: 120, description: "Убить 4 быстрых врага" }
-        ]
-    },
-    {
-        id: 8,
-        name: "Защитник",
-        hasBase: true,
-        tasks: [
-            { type: "baseHealth", target: 80, reward: 200, description: "Сохранить базу с HP > 80%" },
-            { type: "kill", target: 10, reward: 100, description: "Убить 10 врагов" }
-        ]
-    },
-    {
-        id: 9,
-        name: "Скорострел",
-        hasBase: false,
-        tasks: [
-            { type: "kill", target: 20, reward: 200, description: "Убить 20 врагов" },
-            { type: "timeLimit", target: 120, reward: 150, description: "Уложиться в 2 минуты" }
-        ]
-    },
-    {
-        id: 10,
-        name: "Хардкор",
-        hasBase: true,
-        tasks: [
-            { type: "killTank", target: 4, reward: 200, description: "Убить 4 танка" },
-            { type: "survive", target: 120, reward: 200, description: "Выжить 2 минуты" },
-            { type: "noBaseDamage", target: 0, reward: 250, description: "База не должна получить урон" }
-        ]
-    },
-    {
-        id: 11,
-        name: "Лавина",
-        hasBase: false,
-        tasks: [
-            { type: "kill", target: 25, reward: 250, description: "Убить 25 врагов" },
-            { type: "killFast", target: 5, reward: 150, description: "Убить 5 быстрых врагов" }
-        ]
-    },
-    {
-        id: 12,
-        name: "Осада",
-        hasBase: true,
-        tasks: [
-            { type: "survive", target: 150, reward: 250, description: "Выжить 2.5 минуты" },
-            { type: "destroyBase", target: 1, reward: 300, description: "Уничтожить базу врага" }
-        ]
-    },
-    {
-        id: 13,
-        name: "Снайпер",
-        hasBase: false,
-        tasks: [
-            { type: "accuracy", target: 80, reward: 250, description: "Точность стрельбы 80%" },
-            { type: "killTank", target: 3, reward: 180, description: "Убить 3 танка" }
-        ]
-    },
-    {
-        id: 14,
-        name: "Адреналин",
-        hasBase: false,
-        tasks: [
-            { type: "kill", target: 30, reward: 300, description: "Убить 30 врагов" },
-            { type: "noDeaths", target: 0, reward: 350, description: "Не потерять ни одной жизни" },
-            { type: "timeLimit", target: 180, reward: 200, description: "Уложиться в 3 минуты" }
-        ]
-    },
-    {
-        id: 15,
-        name: "ФИНАЛ",
-        hasBase: true,
-        tasks: [
-            { type: "kill", target: 40, reward: 400, description: "Убить 40 врагов" },
-            { type: "killTank", target: 5, reward: 300, description: "Убить 5 танков" },
-            { type: "killFast", target: 6, reward: 250, description: "Убить 6 быстрых врагов" },
-            { type: "destroyBase", target: 1, reward: 500, description: "Уничтожить базу врага" }
-        ]
-    }
+    { id: 1, name: "Тренировка", hasBase: true, tasks: [
+        { type: "kill", target: 5, reward: 50, description: "Убить 5 врагов" },
+        { type: "destroyBase", target: 1, reward: 100, description: "Уничтожить базу врага" }
+    ]},
+    { id: 2, name: "Быстрые твари", hasBase: false, tasks: [
+        { type: "killFast", target: 3, reward: 75, description: "Убить 3 быстрых врага (желтых)" },
+        { type: "survive", target: 60, reward: 100, description: "Выжить 60 секунд" }
+    ]},
+    { id: 3, name: "Тяжелая броня", hasBase: true, tasks: [
+        { type: "killTank", target: 2, reward: 100, description: "Убить 2 танка (фиолетовых)" },
+        { type: "noBaseDamage", target: 0, reward: 150, description: "База не должна получить урон" }
+    ]},
+    { id: 4, name: "Точная стрельба", hasBase: false, tasks: [
+        { type: "accuracy", target: 70, reward: 120, description: "Точность стрельбы 70%" },
+        { type: "kill", target: 10, reward: 100, description: "Убить 10 врагов" }
+    ]},
+    { id: 5, name: "Массовая атака", hasBase: false, tasks: [
+        { type: "kill", target: 15, reward: 150, description: "Убить 15 врагов" },
+        { type: "noDeaths", target: 0, reward: 200, description: "Не потерять ни одной жизни" }
+    ]},
+    { id: 6, name: "Ночной кошмар", hasBase: false, tasks: [
+        { type: "survive", target: 90, reward: 150, description: "Выжить 90 секунд" },
+        { type: "kill", target: 12, reward: 120, description: "Убить 12 врагов" }
+    ]},
+    { id: 7, name: "Элитный отряд", hasBase: false, tasks: [
+        { type: "killTank", target: 3, reward: 150, description: "Убить 3 танка" },
+        { type: "killFast", target: 4, reward: 120, description: "Убить 4 быстрых врага" }
+    ]},
+    { id: 8, name: "Защитник", hasBase: true, tasks: [
+        { type: "baseHealth", target: 80, reward: 200, description: "Сохранить базу с HP > 80%" },
+        { type: "kill", target: 10, reward: 100, description: "Убить 10 врагов" }
+    ]},
+    { id: 9, name: "Скорострел", hasBase: false, tasks: [
+        { type: "kill", target: 20, reward: 200, description: "Убить 20 врагов" },
+        { type: "timeLimit", target: 120, reward: 150, description: "Уложиться в 2 минуты" }
+    ]},
+    { id: 10, name: "Хардкор", hasBase: true, tasks: [
+        { type: "killTank", target: 4, reward: 200, description: "Убить 4 танка" },
+        { type: "survive", target: 120, reward: 200, description: "Выжить 2 минуты" },
+        { type: "noBaseDamage", target: 0, reward: 250, description: "База не должна получить урон" }
+    ]},
+    { id: 11, name: "Лавина", hasBase: false, tasks: [
+        { type: "kill", target: 25, reward: 250, description: "Убить 25 врагов" },
+        { type: "killFast", target: 5, reward: 150, description: "Убить 5 быстрых врагов" }
+    ]},
+    { id: 12, name: "Осада", hasBase: true, tasks: [
+        { type: "survive", target: 150, reward: 250, description: "Выжить 2.5 минуты" },
+        { type: "destroyBase", target: 1, reward: 300, description: "Уничтожить базу врага" }
+    ]},
+    { id: 13, name: "Снайпер", hasBase: false, tasks: [
+        { type: "accuracy", target: 80, reward: 250, description: "Точность стрельбы 80%" },
+        { type: "killTank", target: 3, reward: 180, description: "Убить 3 танка" }
+    ]},
+    { id: 14, name: "Адреналин", hasBase: false, tasks: [
+        { type: "kill", target: 30, reward: 300, description: "Убить 30 врагов" },
+        { type: "noDeaths", target: 0, reward: 350, description: "Не потерять ни одной жизни" },
+        { type: "timeLimit", target: 180, reward: 200, description: "Уложиться в 3 минуты" }
+    ]},
+    { id: 15, name: "ФИНАЛ", hasBase: true, tasks: [
+        { type: "kill", target: 40, reward: 400, description: "Убить 40 врагов" },
+        { type: "killTank", target: 5, reward: 300, description: "Убить 5 танков" },
+        { type: "killFast", target: 6, reward: 250, description: "Убить 6 быстрых врагов" },
+        { type: "destroyBase", target: 1, reward: 500, description: "Уничтожить базу врага" }
+    ]}
 ];
 
 // Игровые данные
@@ -203,8 +128,11 @@ let gameState = {
     defenseDeaths: 0,
     keys: { w: false, a: false, s: false, d: false },
     mouse: { x: 400, y: 300, down: false },
+    touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
     lastShot: 0,
-    startTime: 0
+    startTime: 0,
+    baseInitialHp: 400,
+    deaths: 0
 };
 
 // Таймеры
@@ -344,6 +272,7 @@ function startClassic(difficulty) {
         paused: false,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
+        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
         lastShot: 0,
         startTime: Date.now()
     };
@@ -379,6 +308,7 @@ function startSurvival() {
         survivalScore: 0,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
+        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
         lastShot: 0,
         startTime: Date.now()
     };
@@ -422,6 +352,7 @@ function startCampaign(levelNum) {
         paused: false,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
+        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
         lastShot: 0,
         startTime: Date.now(),
         baseInitialHp: 400,
@@ -459,6 +390,7 @@ function startDefense() {
         defenseDeaths: 0,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
+        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
         lastShot: 0,
         startTime: Date.now()
     };
@@ -469,7 +401,7 @@ function startDefense() {
 
 function startIntervals(spawnSpeed) {
     gameLoopInterval = setInterval(gameLoop, 1000 / 60);
-    gameTimerInterval = setInterval(() => {
+    gameTimerInterval = setInterval(() => { 
         if (gameState.active && !gameState.paused && !gameState.gameOver && !gameState.victory) {
             gameState.timer++;
             
@@ -511,17 +443,17 @@ function spawnClassicEnemy() {
     const type = Math.random() < 0.6 ? 0 : (Math.random() < 0.5 ? 1 : 2);
     let hp, speed, damage, fireRate, bodyColor, trackColor, typeName;
     
-    if (type === 0) {
+    if (type === 0) { 
         hp = 45; speed = 1; damage = 8; fireRate = 2000;
         bodyColor = '#ff0066'; trackColor = '#cc0052';
         typeName = 'normal';
     }
-    else if (type === 1) {
+    else if (type === 1) { 
         hp = 25; speed = 2; damage = 5; fireRate = 1500;
         bodyColor = '#ffff00'; trackColor = '#cccc00';
         typeName = 'fast';
     }
-    else {
+    else { 
         hp = 90; speed = 0.6; damage = 15; fireRate = 2500;
         bodyColor = '#aa00ff'; trackColor = '#8800cc';
         typeName = 'tank';
@@ -529,7 +461,7 @@ function spawnClassicEnemy() {
 
     gameState.enemies.push({
         x: Math.random() * 700 + 50, y: 50,
-        hp: hp, maxHp: hp, speed: speed,
+        hp: hp, maxHp: hp, speed: speed, 
         bodyColor: bodyColor, trackColor: trackColor,
         type: type, typeName: typeName, damage: damage,
         angle: 0,
@@ -543,17 +475,17 @@ function spawnSurvivalEnemy() {
     const type = Math.random() < 0.5 ? 0 : (Math.random() < 0.6 ? 1 : 2);
     let hp, speed, damage, fireRate, bodyColor, trackColor, typeName;
     
-    if (type === 0) {
+    if (type === 0) { 
         hp = 35 + waveBonus * 3; speed = 1.2 + waveBonus * 0.1; damage = 8 + waveBonus; fireRate = 1800;
         bodyColor = '#ff0066'; trackColor = '#cc0052';
         typeName = 'normal';
     }
-    else if (type === 1) {
+    else if (type === 1) { 
         hp = 20 + waveBonus * 2; speed = 2.5 + waveBonus * 0.2; damage = 5 + waveBonus; fireRate = 1200;
         bodyColor = '#ffff00'; trackColor = '#cccc00';
         typeName = 'fast';
     }
-    else {
+    else { 
         hp = 70 + waveBonus * 5; speed = 0.8 + waveBonus * 0.05; damage = 15 + waveBonus * 2; fireRate = 2200;
         bodyColor = '#aa00ff'; trackColor = '#8800cc';
         typeName = 'tank';
@@ -561,7 +493,7 @@ function spawnSurvivalEnemy() {
 
     gameState.enemies.push({
         x: Math.random() * 700 + 50, y: Math.random() * 200 + 50,
-        hp: hp, maxHp: hp, speed: Math.min(speed, 4),
+        hp: hp, maxHp: hp, speed: Math.min(speed, 4), 
         bodyColor: bodyColor, trackColor: trackColor,
         type: type, typeName: typeName, damage: damage,
         angle: 0,
@@ -578,17 +510,17 @@ function spawnCampaignEnemy() {
     else type = Math.random() < 0.5 ? 0 : (Math.random() < 0.5 ? 1 : 2);
     
     let hp, speed, damage, fireRate, bodyColor, trackColor, typeName;
-    if (type === 0) {
+    if (type === 0) { 
         hp = 40 + level * 3; speed = 1; damage = 8 + level; fireRate = 2000;
         bodyColor = '#ff0066'; trackColor = '#cc0052';
         typeName = 'normal';
     }
-    else if (type === 1) {
+    else if (type === 1) { 
         hp = 20 + level * 2; speed = 2; damage = 5 + level; fireRate = 1500;
         bodyColor = '#ffff00'; trackColor = '#cccc00';
         typeName = 'fast';
     }
-    else {
+    else { 
         hp = 80 + level * 5; speed = 0.6; damage = 15 + level * 2; fireRate = 2500;
         bodyColor = '#aa00ff'; trackColor = '#8800cc';
         typeName = 'tank';
@@ -596,7 +528,7 @@ function spawnCampaignEnemy() {
 
     gameState.enemies.push({
         x: Math.random() * 700 + 50, y: 50,
-        hp: hp, maxHp: hp, speed: speed,
+        hp: hp, maxHp: hp, speed: speed, 
         bodyColor: bodyColor, trackColor: trackColor,
         type: type, typeName: typeName, damage: damage,
         angle: 0,
@@ -613,17 +545,17 @@ function spawnDefenseEnemy() {
         const type = Math.random() < 0.5 ? 0 : (Math.random() < 0.5 ? 1 : 2);
         let hp, speed, damage, fireRate, bodyColor, trackColor, typeName;
         
-        if (type === 0) {
+        if (type === 0) { 
             hp = 40; speed = 1; damage = 8; fireRate = 2000;
             bodyColor = '#ff0066'; trackColor = '#cc0052';
             typeName = 'normal';
         }
-        else if (type === 1) {
+        else if (type === 1) { 
             hp = 20; speed = 2; damage = 5; fireRate = 1500;
             bodyColor = '#ffff00'; trackColor = '#cccc00';
             typeName = 'fast';
         }
-        else {
+        else { 
             hp = 80; speed = 0.6; damage = 15; fireRate = 2500;
             bodyColor = '#aa00ff'; trackColor = '#8800cc';
             typeName = 'tank';
@@ -631,7 +563,7 @@ function spawnDefenseEnemy() {
 
         gameState.enemies.push({
             x: Math.random() * 700 + 50, y: 50,
-            hp: hp, maxHp: hp, speed: speed,
+            hp: hp, maxHp: hp, speed: speed, 
             bodyColor: bodyColor, trackColor: trackColor,
             type: type, typeName: typeName, damage: damage,
             angle: 0,
@@ -645,10 +577,10 @@ function spawnDefenseEnemy() {
 function gameLoop() {
     if (!gameState.active || gameState.paused) return;
     
-    if (gameState.gameOver) {
-        showScreen('game-over');
-        stopAllIntervals();
-        return;
+    if (gameState.gameOver) { 
+        showScreen('game-over'); 
+        stopAllIntervals(); 
+        return; 
     }
     
     if (gameState.victory) {
@@ -668,9 +600,9 @@ function gameLoop() {
             saveGameData();
         }
         
-        showScreen('victory');
-        stopAllIntervals();
-        return;
+        showScreen('victory'); 
+        stopAllIntervals(); 
+        return; 
     }
 
     updatePlayer();
@@ -685,29 +617,55 @@ function gameLoop() {
     draw();
 }
 
+// --- НОВОЕ: ОБНОВЛЕННАЯ ФУНКЦИЯ PLAYER С МОБИЛЬНЫМ УПРАВЛЕНИЕМ ---
 function updatePlayer() {
     const p = gameState.player;
     if (!p) return;
     
+    // Управление с клавиатуры
     if (gameState.keys.w) p.y -= p.speed;
     if (gameState.keys.s) p.y += p.speed;
     if (gameState.keys.a) p.x -= p.speed;
     if (gameState.keys.d) p.x += p.speed;
     
+    // Мобильное управление (движение)
+    if (gameState.touch.move) {
+        // Преобразуем координаты касания в вектор движения
+        const dx = gameState.touch.moveX - p.x;
+        const dy = gameState.touch.moveY - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if (dist > 20) {
+            p.x += (dx / dist) * p.speed;
+            p.y += (dy / dist) * p.speed;
+        }
+    }
+    
+    // Границы
     p.x = Math.max(25, Math.min(775, p.x));
     p.y = Math.max(25, Math.min(575, p.y));
 
-    p.angle = Math.atan2(gameState.mouse.y - p.y, gameState.mouse.x - p.x);
+    // Прицел (мышь или мобильное касание)
+    let targetX = gameState.mouse.x;
+    let targetY = gameState.mouse.y;
+    
+    if (gameState.touch.aim) {
+        targetX = gameState.touch.aimX;
+        targetY = gameState.touch.aimY;
+    }
+    
+    p.angle = Math.atan2(targetY - p.y, targetX - p.x);
 
+    // Стрельба
     const now = Date.now();
-    if (gameState.mouse.down && now - gameState.lastShot > 200) {
+    if ((gameState.mouse.down || gameState.touch.aim) && now - gameState.lastShot > 200) {
         gameState.lastShot = now;
         gameState.shotsFired++;
         
         gameState.bullets.push({
-            x: p.x + Math.cos(p.angle) * 20,
+            x: p.x + Math.cos(p.angle) * 20, 
             y: p.y + Math.sin(p.angle) * 20,
-            vx: Math.cos(p.angle) * 8,
+            vx: Math.cos(p.angle) * 8, 
             vy: Math.sin(p.angle) * 8,
             damage: 15, color: '#00f5ff', owner: 'player'
         });
@@ -718,53 +676,27 @@ function updateEnemies() {
     for (let i = gameState.enemies.length - 1; i >= 0; i--) {
         const e = gameState.enemies[i];
         
-        // Определяем две потенциальные цели: база игрока и сам игрок
-        let baseTarget = null;
-        let playerTarget = gameState.player;
-        
-        if (gameState.playerBase) {
-            baseTarget = { x: gameState.playerBase.x, y: gameState.playerBase.y };
-        }
-        
-        // Выбираем ближайшую цель
         let targetX, targetY;
-        
-        if (baseTarget) {
-            const distToBase = Math.hypot(baseTarget.x - e.x, baseTarget.y - e.y);
-            const distToPlayer = Math.hypot(playerTarget.x - e.x, playerTarget.y - e.y);
-            
-            // Если игрок рядом - атакуем игрока, иначе идем к базе
-            if (distToPlayer < 150) {
-                targetX = playerTarget.x;
-                targetY = playerTarget.y;
-            } else {
-                targetX = baseTarget.x;
-                targetY = baseTarget.y;
-            }
+        if (gameState.mode === 'survival') {
+            targetX = gameState.player.x;
+            targetY = gameState.player.y;
+        } else if (gameState.mode === 'defense' && !gameState.enemyBase) {
+            targetX = gameState.playerBase.x;
+            targetY = gameState.playerBase.y;
         } else {
-            // Если базы нет - только игрок
-            targetX = playerTarget.x;
-            targetY = playerTarget.y;
+            targetX = gameState.playerBase ? gameState.playerBase.x : gameState.player.x;
+            targetY = gameState.playerBase ? gameState.playerBase.y : gameState.player.y;
         }
         
-        // Поворачиваем башню к игроку (всегда стреляем по игроку)
         e.angle = Math.atan2(gameState.player.y - e.y, gameState.player.x - e.x);
         
-        // Движение к выбранной цели
         const dx = targetX - e.x;
         const dy = targetY - e.y;
         const len = Math.sqrt(dx*dx + dy*dy);
         
-        if (len > 30) {
+        if (len > 50) {
             e.x += (dx / len) * e.speed;
             e.y += (dy / len) * e.speed;
-        }
-        
-        // Если дошли до базы - наносим урон
-        if (baseTarget && Math.hypot(e.x - baseTarget.x, e.y - baseTarget.y) < 30) {
-            gameState.playerBase.hp -= e.damage;
-            gameState.enemies.splice(i, 1);
-            if (gameState.playerBase.hp <= 0) gameState.gameOver = true;
         }
     }
 }
@@ -775,7 +707,6 @@ function updateEnemyShooting() {
         if (now - e.lastShot > e.fireRate) {
             e.lastShot = now;
             
-            // Враги стреляют по игроку
             let targetX = gameState.player.x;
             let targetY = gameState.player.y;
             
@@ -840,12 +771,9 @@ function updateBullets() {
         }
         if (hit) continue;
 
-        // Попадание во вражескую базу
         if (gameState.enemyBase && Math.hypot(b.x - gameState.enemyBase.x, b.y - gameState.enemyBase.y) < 35) {
             gameState.enemyBase.hp -= b.damage;
             gameState.bullets.splice(i, 1);
-            
-            // В классическом режиме сразу победа
             if (gameState.mode === 'classic' && gameState.enemyBase.hp <= 0) {
                 gameState.victory = true;
             }
@@ -864,7 +792,6 @@ function updateEnemyBullets() {
             continue;
         }
         
-        // Попадание в игрока
         if (Math.hypot(b.x - gameState.player.x, b.y - gameState.player.y) < 20) {
             gameState.player.hp -= b.damage;
             gameState.enemyBullets.splice(i, 1);
@@ -883,7 +810,6 @@ function updateEnemyBullets() {
             continue;
         }
         
-        // Попадание в базу игрока
         if (gameState.playerBase && Math.hypot(b.x - gameState.playerBase.x, b.y - gameState.playerBase.y) < 35) {
             gameState.playerBase.hp -= b.damage;
             gameState.enemyBullets.splice(i, 1);
@@ -904,9 +830,9 @@ function checkCollisions() {
                 gameState.deaths++;
                 gameState.defenseDeaths++;
                 
-                if (gameState.player.lives <= 0) {
-                    gameState.gameOver = true;
-                } else {
+                if (gameState.player.lives <= 0) { 
+                    gameState.gameOver = true; 
+                } else { 
                     gameState.player.hp = gameState.player.maxHp;
                 }
             }
@@ -959,16 +885,9 @@ function checkCampaignTasks() {
     });
     
     const allCompleted = gameState.campaignTasks.every(task => task.completed);
-    
     const level = campaignLevels.find(l => l.id === gameState.campaignLevel);
-    if (level && level.hasBase) {
-        if (allCompleted) {
-            gameState.victory = true;
-        }
-    } else {
-        if (allCompleted) {
-            gameState.victory = true;
-        }
+    if ((level && level.hasBase) ? allCompleted : allCompleted) {
+        gameState.victory = true;
     }
 }
 
@@ -1106,7 +1025,7 @@ function draw() {
     
     ctx.shadowBlur = 0;
     
-    // Режим игры слева
+    // Режим игры
     ctx.font = 'bold 24px "Courier New"';
     ctx.fillStyle = '#ff0066';
     ctx.shadowColor = '#ff0066';
@@ -1121,7 +1040,7 @@ function draw() {
     }
     ctx.fillText(modeDisplay, 10, 50);
     
-    // Задания кампании справа
+    // Задания кампании
     if (gameState.mode === 'campaign' && gameState.campaignTasks) {
         ctx.shadowColor = '#00ff00';
         ctx.shadowBlur = 10;
@@ -1143,6 +1062,15 @@ function draw() {
         });
         
         ctx.textAlign = 'left';
+    }
+    
+    // Подсказки для мобильного управления
+    if (window.innerWidth <= 768 && gameState.active) {
+        ctx.font = '12px "Courier New"';
+        ctx.fillStyle = '#ffffff80';
+        ctx.shadowBlur = 0;
+        ctx.fillText('👆 Слева: движение', 10, 100);
+        ctx.fillText('👆 Справа: прицел', 10, 120);
     }
     
     ctx.shadowBlur = 0;
@@ -1274,32 +1202,73 @@ canvas.addEventListener('mouseup', (e) => {
     if (e.button === 0) gameState.mouse.down = false;
 });
 
+// --- НОВОЕ: МОБИЛЬНОЕ УПРАВЛЕНИЕ ---
 canvas.addEventListener('touchstart', (e) => {
     e.preventDefault();
-    gameState.mouse.down = true;
-    const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    gameState.mouse.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    gameState.mouse.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    const touches = e.touches;
+    
+    for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+        
+        // Левая половина экрана - движение
+        if (x < canvas.width / 2) {
+            gameState.touch.move = true;
+            gameState.touch.moveX = x;
+            gameState.touch.moveY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        } 
+        // Правая половина экрана - прицел и стрельба
+        else {
+            gameState.touch.aim = true;
+            gameState.touch.aimX = x;
+            gameState.touch.aimY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        }
+    }
 });
 
 canvas.addEventListener('touchmove', (e) => {
     e.preventDefault();
-    const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    gameState.mouse.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    gameState.mouse.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    const touches = e.touches;
+    
+    // Сбрасываем состояния
+    gameState.touch.move = false;
+    gameState.touch.aim = false;
+    
+    for (let i = 0; i < touches.length; i++) {
+        const touch = touches[i];
+        const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+        
+        if (x < canvas.width / 2) {
+            gameState.touch.move = true;
+            gameState.touch.moveX = x;
+            gameState.touch.moveY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        } else {
+            gameState.touch.aim = true;
+            gameState.touch.aimX = x;
+            gameState.touch.aimY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        }
+    }
 });
 
 canvas.addEventListener('touchend', (e) => {
     e.preventDefault();
-    gameState.mouse.down = false;
+    gameState.touch.move = false;
+    gameState.touch.aim = false;
+});
+
+canvas.addEventListener('touchcancel', (e) => {
+    e.preventDefault();
+    gameState.touch.move = false;
+    gameState.touch.aim = false;
 });
 
 // --- 9. ИНИЦИАЛИЗАЦИЯ ---
 document.addEventListener('DOMContentLoaded', () => {
     loadGameData();
 
+    // Лобби
     document.getElementById('btn-classic').onclick = () => showScreen('difficulty-menu');
     document.getElementById('btn-survival').onclick = () => startSurvival();
     document.getElementById('btn-campaign').onclick = () => {
@@ -1309,14 +1278,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-shop').onclick = () => { updateShopUI(); showScreen('shop'); };
     document.getElementById('btn-achievements').onclick = () => { updateAchievementsUI(); showScreen('achievements'); };
 
+    // Выбор сложности
     document.getElementById('diff-easy').onclick = () => startClassic('easy');
     document.getElementById('diff-medium').onclick = () => startClassic('medium');
     document.getElementById('diff-hard').onclick = () => startClassic('hard');
     document.getElementById('back-from-diff').onclick = () => showScreen('lobby');
 
+    // Назад
     document.getElementById('back-from-shop').onclick = () => showScreen('lobby');
     document.getElementById('back-from-ach').onclick = () => showScreen('lobby');
 
+    // Кнопки покупки
     document.querySelectorAll('.buy-btn').forEach(btn => {
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -1331,6 +1303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
+    // Кнопки достижений
     document.querySelectorAll('.claim-btn').forEach(btn => {
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -1338,6 +1311,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
+    // Рестарт
     document.getElementById('restart-from-over').onclick = () => {
         if (gameState.mode === 'survival') startSurvival();
         else if (gameState.mode === 'campaign') startCampaign(gameState.campaignLevel);
@@ -1356,6 +1330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('menu-from-victory').onclick = () => showScreen('lobby');
 });
 
+// Функция для показа меню кампании
 function showCampaignMenu() {
     const menuDiv = document.createElement('div');
     menuDiv.className = 'screen active';
@@ -1369,8 +1344,8 @@ function showCampaignMenu() {
                 const levelData = campaignLevels.find(l => l.id === level);
                 const hasBaseIcon = levelData.hasBase ? ' 🏰' : ' ⚔️';
                 return `
-                    <button class="neon-btn" style="margin: 5px; border-color: ${buttonColor}; color: ${buttonColor}; box-shadow: 0 0 5px ${buttonColor};"
-                        ${!isAvailable ? 'disabled' : ''}
+                    <button class="neon-btn" style="margin: 5px; border-color: ${buttonColor}; color: ${buttonColor}; box-shadow: 0 0 5px ${buttonColor};" 
+                        ${!isAvailable ? 'disabled' : ''} 
                         onclick="selectCampaignLevel(${level})">
                         УРОВЕНЬ ${level}${hasBaseIcon}
                     </button>
@@ -1388,6 +1363,7 @@ function showCampaignMenu() {
     };
 }
 
+// Глобальная функция для выбора уровня кампании
 window.selectCampaignLevel = function(level) {
     document.getElementById('campaign-menu')?.remove();
     startCampaign(level);
