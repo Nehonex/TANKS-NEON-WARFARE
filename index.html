@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TANKS // NEON WARFARE</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Лобби (Главное меню) -->
+        <div id="lobby" class="screen active">
+            <h1>TANKS // NEON WARFARE</h1>
+            <div class="menu-buttons">
+                <button id="btn-classic" class="neon-btn">CLASSIC</button>
+                <button id="btn-survival" class="neon-btn">SURVIVAL</button>
+                <button id="btn-campaign" class="neon-btn">CAMPAIGN</button>
+                <button id="btn-defense" class="neon-btn">DEFENSE</button>
+                <button id="btn-shop" class="neon-btn">SHOP</button>
+                <button id="btn-achievements" class="neon-btn">ACHIEVEMENTS</button>
+            </div>
+        </div>
+
+        <!-- Меню выбора сложности (для CLASSIC) -->
+        <div id="difficulty-menu" class="screen">
+            <h2>ВЫБЕРИ СЛОЖНОСТЬ</h2>
+            <div class="menu-buttons">
+                <button id="diff-easy" class="neon-btn">EASY</button>
+                <button id="diff-medium" class="neon-btn">MEDIUM</button>
+                <button id="diff-hard" class="neon-btn">HARD</button>
+                <button id="back-from-diff" class="neon-btn back-btn">НАЗАД</button>
+            </div>
+        </div>
+
+        <!-- Магазин -->
+        <div id="shop" class="screen">
+            <h2>МАГАЗИН</h2>
+            <div class="stats-header">💰 <span id="shop-money">0</span></div>
+            <div class="shop-items">
+                <div class="shop-item" data-weapon="shotgun">
+                    <span>SHOTGUN</span> - 100💰 <button class="buy-btn neon-btn" data-weapon="shotgun" data-price="100">Купить</button>
+                </div>
+                <div class="shop-item" data-weapon="rocket">
+                    <span>ROCKET</span> - 200💰 <button class="buy-btn neon-btn" data-weapon="rocket" data-price="200">Купить</button>
+                </div>
+                <div class="shop-item" data-weapon="laser">
+                    <span>LASER</span> - 150💰 <button class="buy-btn neon-btn" data-weapon="laser" data-price="150">Купить</button>
+                </div>
+            </div>
+            <button id="back-from-shop" class="neon-btn back-btn">НАЗАД</button>
+        </div>
+
+        <!-- Достижения -->
+        <div id="achievements" class="screen">
+            <h2>ДОСТИЖЕНИЯ</h2>
+            <div class="achievement-list">
+                <div class="achievement-item" data-ach="firstBlood">
+                    <span>First Blood (убить 1 врага)</span> +50💰 <button class="claim-btn neon-btn" data-ach="firstBlood">Забрать</button>
+                </div>
+                <div class="achievement-item" data-ach="killer">
+                    <span>Killer (убить 10 врагов)</span> +100💰 <button class="claim-btn neon-btn" data-ach="killer">Забрать</button>
+                </div>
+                <div class="achievement-item" data-ach="waveMaster">
+                    <span>Wave Master (дойти до 5 волны)</span> +200💰 <button class="claim-btn neon-btn" data-ach="waveMaster">Забрать</button>
+                </div>
+            </div>
+            <button id="back-from-ach" class="neon-btn back-btn">НАЗАД</button>
+        </div>
+
+        <!-- Игровой экран (холст) -->
+        <canvas id="game-canvas" class="screen"></canvas>
+
+        <!-- Экран Game Over -->
+        <div id="game-over" class="screen">
+            <h2>GAME OVER</h2>
+            <button id="restart-from-over" class="neon-btn">ЗАНОВО</button>
+            <button id="menu-from-over" class="neon-btn">МЕНЮ</button>
+        </div>
+
+        <!-- Экран Victory -->
+        <div id="victory" class="screen">
+            <h2>ПОБЕДА!</h2>
+            <button id="restart-from-victory" class="neon-btn">ЗАНОВО</button>
+            <button id="menu-from-victory" class="neon-btn">МЕНЮ</button>
+        </div>
+
+        <!-- HUD (отображается поверх canvas) -->
+        <div id="hud">
+            <div id="hud-lives">❤️ ❤️ ❤️</div>
+            <div id="hud-stats">
+                <span>🔪 <span id="hud-kills">0</span></span>
+                <span>🌊 <span id="hud-wave">1</span></span>
+                <span>💰 <span id="hud-money">0</span></span>
+                <span>⏱️ <span id="hud-timer">0:00</span></span>
+            </div>
+            <div id="hud-health-bar">
+                <div id="hud-health-fill" style="width: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

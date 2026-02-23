@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Courier New', monospace;
+    color: #00f5ff; /* Неоново-синий */
+}
+
+#game-container {
+    position: relative;
+    width: 800px;
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #0a0a0f; /* Темный фон */
+    border: 2px solid #00f5ff;
+    box-shadow: 0 0 20px #00f5ff;
+    overflow: hidden;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #0a0a0f;
+    z-index: 10;
+}
+
+.screen.active {
+    display: flex;
+}
+
+#game-canvas.screen.active {
+    display: block; /* Canvas отображается как блок */
+    z-index: 1;
+}
+
+h1, h2 {
+    color: #ff0066; /* Неоново-розовый */
+    text-shadow: 0 0 10px #ff0066;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2em;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%;
+    max-width: 300px;
+}
+
+.neon-btn {
+    background: transparent;
+    border: 2px solid #00f5ff;
+    color: #00f5ff;
+    padding: 12px 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 5px #00f5ff;
+    transition: 0.2s;
+    font-family: 'Courier New', monospace;
+}
+
+.neon-btn:hover {
+    background: #00f5ff;
+    color: #0a0a0f;
+    box-shadow: 0 0 20px #00f5ff;
+    border-color: #ff0066;
+}
+
+.back-btn {
+    margin-top: 20px;
+    border-color: #ff0066;
+    color: #ff0066;
+    box-shadow: 0 0 5px #ff0066;
+}
+
+.back-btn:hover {
+    background: #ff0066;
+    color: #0a0a0f;
+}
+
+/* Магазин и Достижения */
+#shop, #achievements {
+    justify-content: flex-start;
+    padding-top: 20px;
+}
+
+.stats-header {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #ff0066;
+}
+
+.shop-items, .achievement-list {
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.shop-item, .achievement-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #00f5ff;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #00f5ff;
+}
+
+.shop-item button, .achievement-item button {
+    padding: 5px 10px;
+    font-size: 0.9em;
+}
+
+/* HUD */
+#hud {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 20;
+    color: #00f5ff;
+    text-shadow: 0 0 5px #00f5ff;
+    pointer-events: none;
+    display: none; /* По умолчанию скрыт */
+}
+
+#game-canvas.active ~ #hud {
+    display: block; /* Показываем HUD только когда активен canvas */
+}
+
+#hud-lives {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+#hud-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+#hud-health-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #333;
+    border: 1px solid #ff0066;
+}
+
+#hud-health-fill {
+    height: 100%;
+    width: 100%;
+    background-color: #00f5ff;
+    transition: width 0.2s;
+}
+
+/* Адаптация под мобильные (подсказка для управления) */
+@media (max-width: 600px) {
+    h1 { font-size: 1.5em; }
+    .neon-btn { padding: 8px 10px; font-size: 1em; }
+    #hud-stats { font-size: 0.9em; flex-wrap: wrap; }
+}
