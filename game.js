@@ -546,7 +546,7 @@ function spawnDefenseEnemy() {
         let hp, speed, damage, fireRate, bodyColor, trackColor, typeName;
         
         if (type === 0) { 
-            hp = 40; speed = 1; damage = 8; fireRate = 2000;
+            hp = 40; speed = 1; damage = 10; fireRate = 2000;
             bodyColor = '#ff0066'; trackColor = '#cc0052';
             typeName = 'normal';
         }
