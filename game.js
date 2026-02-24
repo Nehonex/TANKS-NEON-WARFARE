@@ -1,4 +1,4 @@
-// TANKS // NEON WARFARE - ПОЛНАЯ ВЕРСИЯ С МОБИЛЬНЫМ УПРАВЛЕНИЕМ
+// TANKS // NEON WARFARE - ПОЛНАЯ ВЕРСИЯ С ДЖОЙСТИКАМИ
 // -----------------------------------------------------
 
 // --- 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
@@ -17,6 +17,16 @@ const hudHealthFill = document.getElementById('hud-health-fill');
 
 // Элементы магазина
 const shopMoneySpan = document.getElementById('shop-money');
+
+// Создаем элементы для джойстиков (добавим в HTML)
+const joystickLeft = document.createElement('div');
+joystickLeft.id = 'joystick-left';
+joystickLeft.style.cssText = 'position:absolute;left:0;top:0;width:50%;height:100%;z-index:100;pointer-events:auto;display:none;';
+const joystickRight = document.createElement('div');
+joystickRight.id = 'joystick-right';
+joystickRight.style.cssText = 'position:absolute;right:0;top:0;width:50%;height:100%;z-index:100;pointer-events:auto;display:none;';
+document.getElementById('game-container').appendChild(joystickLeft);
+document.getElementById('game-container').appendChild(joystickRight);
 
 // Данные кампании (15 уровней)
 const campaignLevels = [
@@ -128,7 +138,10 @@ let gameState = {
     defenseDeaths: 0,
     keys: { w: false, a: false, s: false, d: false },
     mouse: { x: 400, y: 300, down: false },
-    touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
+    touch: { 
+        left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
+        right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+    },
     lastShot: 0,
     startTime: 0,
     baseInitialHp: 400,
@@ -178,8 +191,15 @@ function showScreen(screenId) {
         hud.style.display = 'block';
         canvas.width = 800;
         canvas.height = 600;
+        // Показываем джойстики только на мобильных
+        if (window.innerWidth <= 768) {
+            joystickLeft.style.display = 'block';
+            joystickRight.style.display = 'block';
+        }
     } else {
         hud.style.display = 'none';
+        joystickLeft.style.display = 'none';
+        joystickRight.style.display = 'none';
     }
 }
 
@@ -272,7 +292,10 @@ function startClassic(difficulty) {
         paused: false,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
-        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
+        touch: { 
+            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
+            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+        },
         lastShot: 0,
         startTime: Date.now()
     };
@@ -308,7 +331,10 @@ function startSurvival() {
         survivalScore: 0,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
-        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
+        touch: { 
+            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
+            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+        },
         lastShot: 0,
         startTime: Date.now()
     };
@@ -352,7 +378,10 @@ function startCampaign(levelNum) {
         paused: false,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
-        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
+        touch: { 
+            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
+            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+        },
         lastShot: 0,
         startTime: Date.now(),
         baseInitialHp: 400,
@@ -390,7 +419,10 @@ function startDefense() {
         defenseDeaths: 0,
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
-        touch: { move: false, aim: false, moveX: 0, moveY: 0, aimX: 0, aimY: 0 },
+        touch: { 
+            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
+            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+        },
         lastShot: 0,
         startTime: Date.now()
     };
@@ -546,7 +578,7 @@ function spawnDefenseEnemy() {
         let hp, speed, damage, fireRate, bodyColor, trackColor, typeName;
         
         if (type === 0) { 
-            hp = 40; speed = 1; damage = 10; fireRate = 2000;
+            hp = 40; speed = 1; damage = 8; fireRate = 2000;
             bodyColor = '#ff0066'; trackColor = '#cc0052';
             typeName = 'normal';
         }
@@ -617,7 +649,7 @@ function gameLoop() {
     draw();
 }
 
-// --- НОВОЕ: ОБНОВЛЕННАЯ ФУНКЦИЯ PLAYER С МОБИЛЬНЫМ УПРАВЛЕНИЕМ ---
+// --- НОВОЕ: УПРАВЛЕНИЕ С ДЖОЙСТИКАМИ ---
 function updatePlayer() {
     const p = gameState.player;
     if (!p) return;
@@ -628,37 +660,30 @@ function updatePlayer() {
     if (gameState.keys.a) p.x -= p.speed;
     if (gameState.keys.d) p.x += p.speed;
     
-    // Мобильное управление (движение)
-    if (gameState.touch.move) {
-        // Преобразуем координаты касания в вектор движения
-        const dx = gameState.touch.moveX - p.x;
-        const dy = gameState.touch.moveY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        
-        if (dist > 20) {
-            p.x += (dx / dist) * p.speed;
-            p.y += (dy / dist) * p.speed;
-        }
+    // Управление с левого джойстика
+    if (gameState.touch.left.active) {
+        p.x += gameState.touch.left.vectorX * p.speed * 1.5;
+        p.y += gameState.touch.left.vectorY * p.speed * 1.5;
     }
     
     // Границы
     p.x = Math.max(25, Math.min(775, p.x));
     p.y = Math.max(25, Math.min(575, p.y));
 
-    // Прицел (мышь или мобильное касание)
+    // Прицел (мышь или правый джойстик)
     let targetX = gameState.mouse.x;
     let targetY = gameState.mouse.y;
     
-    if (gameState.touch.aim) {
-        targetX = gameState.touch.aimX;
-        targetY = gameState.touch.aimY;
+    if (gameState.touch.right.active) {
+        targetX = gameState.touch.right.aimX;
+        targetY = gameState.touch.right.aimY;
     }
     
     p.angle = Math.atan2(targetY - p.y, targetX - p.x);
 
     // Стрельба
     const now = Date.now();
-    if ((gameState.mouse.down || gameState.touch.aim) && now - gameState.lastShot > 200) {
+    if ((gameState.mouse.down || gameState.touch.right.active) && now - gameState.lastShot > 200) {
         gameState.lastShot = now;
         gameState.shotsFired++;
         
@@ -1064,15 +1089,6 @@ function draw() {
         ctx.textAlign = 'left';
     }
     
-    // Подсказки для мобильного управления
-    if (window.innerWidth <= 768 && gameState.active) {
-        ctx.font = '12px "Courier New"';
-        ctx.fillStyle = '#ffffff80';
-        ctx.shadowBlur = 0;
-        ctx.fillText('👆 Слева: движение', 10, 100);
-        ctx.fillText('👆 Справа: прицел', 10, 120);
-    }
-    
     ctx.shadowBlur = 0;
 }
 
@@ -1202,67 +1218,82 @@ canvas.addEventListener('mouseup', (e) => {
     if (e.button === 0) gameState.mouse.down = false;
 });
 
-// --- НОВОЕ: МОБИЛЬНОЕ УПРАВЛЕНИЕ ---
-canvas.addEventListener('touchstart', (e) => {
+// --- НОВОЕ: МОБИЛЬНОЕ УПРАВЛЕНИЕ С ДЖОЙСТИКАМИ ---
+joystickLeft.addEventListener('touchstart', (e) => {
     e.preventDefault();
+    const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    const touches = e.touches;
     
-    for (let i = 0; i < touches.length; i++) {
-        const touch = touches[i];
-        const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
-        
-        // Левая половина экрана - движение
-        if (x < canvas.width / 2) {
-            gameState.touch.move = true;
-            gameState.touch.moveX = x;
-            gameState.touch.moveY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-        } 
-        // Правая половина экрана - прицел и стрельба
-        else {
-            gameState.touch.aim = true;
-            gameState.touch.aimX = x;
-            gameState.touch.aimY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-        }
+    gameState.touch.left.active = true;
+    gameState.touch.left.startX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    gameState.touch.left.startY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    gameState.touch.left.currentX = gameState.touch.left.startX;
+    gameState.touch.left.currentY = gameState.touch.left.startY;
+});
+
+joystickLeft.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    
+    const currentX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    const currentY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    
+    gameState.touch.left.currentX = currentX;
+    gameState.touch.left.currentY = currentY;
+    
+    // Вычисляем вектор движения (от начальной точки)
+    let dx = currentX - gameState.touch.left.startX;
+    let dy = currentY - gameState.touch.left.startY;
+    const distance = Math.sqrt(dx*dx + dy*dy);
+    
+    if (distance > 20) {
+        // Нормализуем вектор
+        gameState.touch.left.vectorX = dx / distance;
+        gameState.touch.left.vectorY = dy / distance;
+    } else {
+        gameState.touch.left.vectorX = 0;
+        gameState.touch.left.vectorY = 0;
     }
 });
 
-canvas.addEventListener('touchmove', (e) => {
+joystickLeft.addEventListener('touchend', (e) => {
     e.preventDefault();
+    gameState.touch.left.active = false;
+    gameState.touch.left.vectorX = 0;
+    gameState.touch.left.vectorY = 0;
+});
+
+joystickRight.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
-    const touches = e.touches;
     
-    // Сбрасываем состояния
-    gameState.touch.move = false;
-    gameState.touch.aim = false;
-    
-    for (let i = 0; i < touches.length; i++) {
-        const touch = touches[i];
-        const x = (touch.clientX - rect.left) * (canvas.width / rect.width);
-        
-        if (x < canvas.width / 2) {
-            gameState.touch.move = true;
-            gameState.touch.moveX = x;
-            gameState.touch.moveY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-        } else {
-            gameState.touch.aim = true;
-            gameState.touch.aimX = x;
-            gameState.touch.aimY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-        }
-    }
+    gameState.touch.right.active = true;
+    gameState.touch.right.startX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    gameState.touch.right.startY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    gameState.touch.right.aimX = gameState.touch.right.startX;
+    gameState.touch.right.aimY = gameState.touch.right.startY;
 });
 
-canvas.addEventListener('touchend', (e) => {
+joystickRight.addEventListener('touchmove', (e) => {
     e.preventDefault();
-    gameState.touch.move = false;
-    gameState.touch.aim = false;
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    
+    gameState.touch.right.aimX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    gameState.touch.right.aimY = (touch.clientY - rect.top) * (canvas.height / rect.height);
 });
 
-canvas.addEventListener('touchcancel', (e) => {
+joystickRight.addEventListener('touchend', (e) => {
     e.preventDefault();
-    gameState.touch.move = false;
-    gameState.touch.aim = false;
+    gameState.touch.right.active = false;
 });
+
+// Отключаем стандартное поведение touch на canvas
+canvas.addEventListener('touchstart', (e) => e.preventDefault());
+canvas.addEventListener('touchmove', (e) => e.preventDefault());
+canvas.addEventListener('touchend', (e) => e.preventDefault());
 
 // --- 9. ИНИЦИАЛИЗАЦИЯ ---
 document.addEventListener('DOMContentLoaded', () => {
