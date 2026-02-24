@@ -1,4 +1,4 @@
-// TANKS // NEON WARFARE - ПОЛНАЯ ВЕРСИЯ С ДЖОЙСТИКАМИ
+// TANKS // NEON WARFARE - ИДЕАЛЬНОЕ МОБИЛЬНОЕ УПРАВЛЕНИЕ
 // -----------------------------------------------------
 
 // --- 1. ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
@@ -18,7 +18,7 @@ const hudHealthFill = document.getElementById('hud-health-fill');
 // Элементы магазина
 const shopMoneySpan = document.getElementById('shop-money');
 
-// Создаем элементы для джойстиков (добавим в HTML)
+// Создаем элементы для джойстиков
 const joystickLeft = document.createElement('div');
 joystickLeft.id = 'joystick-left';
 joystickLeft.style.cssText = 'position:absolute;left:0;top:0;width:50%;height:100%;z-index:100;pointer-events:auto;display:none;';
@@ -28,7 +28,7 @@ joystickRight.style.cssText = 'position:absolute;right:0;top:0;width:50%;height:
 document.getElementById('game-container').appendChild(joystickLeft);
 document.getElementById('game-container').appendChild(joystickRight);
 
-// Данные кампании (15 уровней)
+// Данные кампании
 const campaignLevels = [
     { id: 1, name: "Тренировка", hasBase: true, tasks: [
         { type: "kill", target: 5, reward: 50, description: "Убить 5 врагов" },
@@ -139,8 +139,8 @@ let gameState = {
     keys: { w: false, a: false, s: false, d: false },
     mouse: { x: 400, y: 300, down: false },
     touch: { 
-        left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
-        right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+        left: { active: false, vectorX: 0, vectorY: 0 },
+        right: { active: false, angle: 0 }
     },
     lastShot: 0,
     startTime: 0,
@@ -191,7 +191,6 @@ function showScreen(screenId) {
         hud.style.display = 'block';
         canvas.width = 800;
         canvas.height = 600;
-        // Показываем джойстики только на мобильных
         if (window.innerWidth <= 768) {
             joystickLeft.style.display = 'block';
             joystickRight.style.display = 'block';
@@ -293,8 +292,8 @@ function startClassic(difficulty) {
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
         touch: { 
-            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
-            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+            left: { active: false, vectorX: 0, vectorY: 0 },
+            right: { active: false, angle: 0 }
         },
         lastShot: 0,
         startTime: Date.now()
@@ -332,8 +331,8 @@ function startSurvival() {
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
         touch: { 
-            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
-            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+            left: { active: false, vectorX: 0, vectorY: 0 },
+            right: { active: false, angle: 0 }
         },
         lastShot: 0,
         startTime: Date.now()
@@ -379,8 +378,8 @@ function startCampaign(levelNum) {
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
         touch: { 
-            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
-            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+            left: { active: false, vectorX: 0, vectorY: 0 },
+            right: { active: false, angle: 0 }
         },
         lastShot: 0,
         startTime: Date.now(),
@@ -420,8 +419,8 @@ function startDefense() {
         keys: { w: false, a: false, s: false, d: false },
         mouse: { x: 400, y: 300, down: false },
         touch: { 
-            left: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, vectorX: 0, vectorY: 0 },
-            right: { active: false, startX: 0, startY: 0, currentX: 0, currentY: 0, aimX: 0, aimY: 0 }
+            left: { active: false, vectorX: 0, vectorY: 0 },
+            right: { active: false, angle: 0 }
         },
         lastShot: 0,
         startTime: Date.now()
@@ -649,7 +648,7 @@ function gameLoop() {
     draw();
 }
 
-// --- НОВОЕ: УПРАВЛЕНИЕ С ДЖОЙСТИКАМИ ---
+// --- НОВОЕ: ИДЕАЛЬНОЕ УПРАВЛЕНИЕ ---
 function updatePlayer() {
     const p = gameState.player;
     if (!p) return;
@@ -660,10 +659,10 @@ function updatePlayer() {
     if (gameState.keys.a) p.x -= p.speed;
     if (gameState.keys.d) p.x += p.speed;
     
-    // Управление с левого джойстика
+    // Управление с левого джойстика (ТОЛЬКО движение)
     if (gameState.touch.left.active) {
-        p.x += gameState.touch.left.vectorX * p.speed * 1.5;
-        p.y += gameState.touch.left.vectorY * p.speed * 1.5;
+        p.x += gameState.touch.left.vectorX * p.speed * 2;
+        p.y += gameState.touch.left.vectorY * p.speed * 2;
     }
     
     // Границы
@@ -671,17 +670,15 @@ function updatePlayer() {
     p.y = Math.max(25, Math.min(575, p.y));
 
     // Прицел (мышь или правый джойстик)
-    let targetX = gameState.mouse.x;
-    let targetY = gameState.mouse.y;
-    
     if (gameState.touch.right.active) {
-        targetX = gameState.touch.right.aimX;
-        targetY = gameState.touch.right.aimY;
+        // Правый джойстик управляет направлением стрельбы
+        p.angle = gameState.touch.right.angle;
+    } else if (gameState.mouse.down) {
+        // Мышь
+        p.angle = Math.atan2(gameState.mouse.y - p.y, gameState.mouse.x - p.x);
     }
-    
-    p.angle = Math.atan2(targetY - p.y, targetX - p.x);
 
-    // Стрельба
+    // Стрельба (автоматическая когда правый джойстик активен)
     const now = Date.now();
     if ((gameState.mouse.down || gameState.touch.right.active) && now - gameState.lastShot > 200) {
         gameState.lastShot = now;
@@ -1218,17 +1215,10 @@ canvas.addEventListener('mouseup', (e) => {
     if (e.button === 0) gameState.mouse.down = false;
 });
 
-// --- НОВОЕ: МОБИЛЬНОЕ УПРАВЛЕНИЕ С ДЖОЙСТИКАМИ ---
+// --- НОВОЕ: ИДЕАЛЬНОЕ МОБИЛЬНОЕ УПРАВЛЕНИЕ ---
 joystickLeft.addEventListener('touchstart', (e) => {
     e.preventDefault();
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    
     gameState.touch.left.active = true;
-    gameState.touch.left.startX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    gameState.touch.left.startY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-    gameState.touch.left.currentX = gameState.touch.left.startX;
-    gameState.touch.left.currentY = gameState.touch.left.startY;
 });
 
 joystickLeft.addEventListener('touchmove', (e) => {
@@ -1236,15 +1226,16 @@ joystickLeft.addEventListener('touchmove', (e) => {
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
     
-    const currentX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    const currentY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    // Получаем координаты касания
+    const touchX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    const touchY = (touch.clientY - rect.top) * (canvas.height / rect.height);
     
-    gameState.touch.left.currentX = currentX;
-    gameState.touch.left.currentY = currentY;
+    // Вычисляем вектор от центра левой половины экрана
+    const centerX = canvas.width / 4; // Центр левой половины
+    const centerY = canvas.height / 2;
     
-    // Вычисляем вектор движения (от начальной точки)
-    let dx = currentX - gameState.touch.left.startX;
-    let dy = currentY - gameState.touch.left.startY;
+    let dx = touchX - centerX;
+    let dy = touchY - centerY;
     const distance = Math.sqrt(dx*dx + dy*dy);
     
     if (distance > 20) {
@@ -1266,23 +1257,30 @@ joystickLeft.addEventListener('touchend', (e) => {
 
 joystickRight.addEventListener('touchstart', (e) => {
     e.preventDefault();
+    gameState.touch.right.active = true;
+    
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
+    const touchX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    const touchY = (touch.clientY - rect.top) * (canvas.height / rect.height);
     
-    gameState.touch.right.active = true;
-    gameState.touch.right.startX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    gameState.touch.right.startY = (touch.clientY - rect.top) * (canvas.height / rect.height);
-    gameState.touch.right.aimX = gameState.touch.right.startX;
-    gameState.touch.right.aimY = gameState.touch.right.startY;
+    // Сразу вычисляем угол при касании
+    const dx = touchX - gameState.player.x;
+    const dy = touchY - gameState.player.y;
+    gameState.touch.right.angle = Math.atan2(dy, dx);
 });
 
 joystickRight.addEventListener('touchmove', (e) => {
     e.preventDefault();
     const touch = e.touches[0];
     const rect = canvas.getBoundingClientRect();
+    const touchX = (touch.clientX - rect.left) * (canvas.width / rect.width);
+    const touchY = (touch.clientY - rect.top) * (canvas.height / rect.height);
     
-    gameState.touch.right.aimX = (touch.clientX - rect.left) * (canvas.width / rect.width);
-    gameState.touch.right.aimY = (touch.clientY - rect.top) * (canvas.height / rect.height);
+    // Вычисляем угол от игрока к точке касания
+    const dx = touchX - gameState.player.x;
+    const dy = touchY - gameState.player.y;
+    gameState.touch.right.angle = Math.atan2(dy, dx);
 });
 
 joystickRight.addEventListener('touchend', (e) => {
@@ -1308,6 +1306,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-defense').onclick = () => startDefense();
     document.getElementById('btn-shop').onclick = () => { updateShopUI(); showScreen('shop'); };
     document.getElementById('btn-achievements').onclick = () => { updateAchievementsUI(); showScreen('achievements'); };
+
+    // Добавляем кнопку Channel
+    const channelBtn = document.createElement('button');
+    channelBtn.id = 'btn-channel';
+    channelBtn.className = 'neon-btn';
+    channelBtn.style.marginTop = '20px';
+    channelBtn.style.borderColor = '#00f5ff';
+    channelBtn.style.color = '#00f5ff';
+    channelBtn.innerHTML = 'CHANNEL';
+    channelBtn.onclick = () => window.open('https://t.me/tanks_neon_warfare', '_blank');
+    document.querySelector('#lobby .menu-buttons').appendChild(channelBtn);
 
     // Выбор сложности
     document.getElementById('diff-easy').onclick = () => startClassic('easy');
