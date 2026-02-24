@@ -1050,7 +1050,7 @@
             if (gameState.keys.a) p.x -= p.speed;
             if (gameState.keys.d) p.x += p.speed;
             
-            // Управление с левого джойстика
+            // Управление с левого джойстика (движение)
             if (gameState.touch.left.active) {
                 p.x += gameState.touch.left.vectorX * p.speed * 2;
                 p.y += gameState.touch.left.vectorY * p.speed * 2;
@@ -1060,7 +1060,7 @@
             p.x = Math.max(25, Math.min(775, p.x));
             p.y = Math.max(25, Math.min(575, p.y));
 
-            // Прицел
+            // Прицел - используем правый джойстик если активен, иначе мышь
             if (gameState.touch.right.active) {
                 p.angle = gameState.touch.right.angle;
             } else if (gameState.mouse.down) {
@@ -1089,17 +1089,25 @@
                 
                 let targetX, targetY;
                 if (gameState.mode === 'survival') {
+                    if (!gameState.player) continue;
                     targetX = gameState.player.x;
                     targetY = gameState.player.y;
-                } else if (gameState.mode === 'defense' && !gameState.enemyBase) {
+                } else if (gameState.mode === 'defense' && gameState.playerBase) {
                     targetX = gameState.playerBase.x;
                     targetY = gameState.playerBase.y;
+                } else if (gameState.playerBase) {
+                    targetX = gameState.playerBase.x;
+                    targetY = gameState.playerBase.y;
+                } else if (gameState.player) {
+                    targetX = gameState.player.x;
+                    targetY = gameState.player.y;
                 } else {
-                    targetX = gameState.playerBase ? gameState.playerBase.x : gameState.player.x;
-                    targetY = gameState.playerBase ? gameState.playerBase.y : gameState.player.y;
+                    continue;
                 }
                 
-                e.angle = Math.atan2(gameState.player.y - e.y, gameState.player.x - e.x);
+                if (gameState.player) {
+                    e.angle = Math.atan2(gameState.player.y - e.y, gameState.player.x - e.x);
+                }
                 
                 const dx = targetX - e.x;
                 const dy = targetY - e.y;
@@ -1118,8 +1126,19 @@
                 if (now - e.lastShot > e.fireRate) {
                     e.lastShot = now;
                     
-                    let targetX = gameState.player.x;
-                    let targetY = gameState.player.y;
+                    let targetX, targetY;
+                    if (gameState.mode === 'survival' && gameState.player) {
+                        targetX = gameState.player.x;
+                        targetY = gameState.player.y;
+                    } else if (gameState.mode === 'defense' && gameState.playerBase) {
+                        targetX = gameState.playerBase.x;
+                        targetY = gameState.playerBase.y;
+                    } else if (gameState.player) {
+                        targetX = gameState.player.x;
+                        targetY = gameState.player.y;
+                    } else {
+                        continue;
+                    }
                     
                     const dx = targetX - e.x;
                     const dy = targetY - e.y;
@@ -1203,7 +1222,7 @@
                     continue;
                 }
                 
-                if (Math.hypot(b.x - gameState.player.x, b.y - gameState.player.y) < 20) {
+                if (gameState.player && Math.hypot(b.x - gameState.player.x, b.y - gameState.player.y) < 20) {
                     gameState.player.hp -= b.damage;
                     gameState.enemyBullets.splice(i, 1);
                     
@@ -1232,7 +1251,7 @@
         function checkCollisions() {
             for (let i = gameState.enemies.length - 1; i >= 0; i--) {
                 const e = gameState.enemies[i];
-                if (Math.hypot(e.x - gameState.player.x, e.y - gameState.player.y) < 30) {
+                if (gameState.player && Math.hypot(e.x - gameState.player.x, e.y - gameState.player.y) < 30) {
                     gameState.player.hp -= e.damage * 0.5;
                     gameState.enemies.splice(i, 1);
                     
@@ -1296,8 +1315,7 @@
             });
             
             const allCompleted = gameState.campaignTasks.every(task => task.completed);
-            const level = campaignLevels.find(l => l.id === gameState.campaignLevel);
-            if ((level && level.hasBase) ? allCompleted : allCompleted) {
+            if (allCompleted) {
                 gameState.victory = true;
             }
         }
@@ -1377,14 +1395,16 @@
             }
             
             // Игрок
-            drawTank(gameState.player.x, gameState.player.y, gameState.player.angle, '#00f5ff', '#0088ff', true);
-            
-            // Полоска здоровья игрока
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = '#333';
-            ctx.fillRect(gameState.player.x - 20, gameState.player.y - 30, 40, 4);
-            ctx.fillStyle = '#00f5ff';
-            ctx.fillRect(gameState.player.x - 20, gameState.player.y - 30, 40 * (gameState.player.hp / gameState.player.maxHp), 4);
+            if (gameState.player) {
+                drawTank(gameState.player.x, gameState.player.y, gameState.player.angle, '#00f5ff', '#0088ff', true);
+                
+                // Полоска здоровья игрока
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(gameState.player.x - 20, gameState.player.y - 30, 40, 4);
+                ctx.fillStyle = '#00f5ff';
+                ctx.fillRect(gameState.player.x - 20, gameState.player.y - 30, 40 * (gameState.player.hp / gameState.player.maxHp), 4);
+            }
             
             // Враги
             gameState.enemies.forEach(e => {
@@ -1604,26 +1624,41 @@
             if (e.button === 0) gameState.mouse.down = false;
         });
 
-        // --- МОБИЛЬНОЕ УПРАВЛЕНИЕ С ВИЗУАЛЬНЫМИ ДЖОЙСТИКАМИ ---
+        // --- МОБИЛЬНОЕ УПРАВЛЕНИЕ С ВИЗУАЛЬНЫМИ ДЖОЙСТИКАМИ (ИСПРАВЛЕНО) ---
+        let leftTouchId = null;
+        let rightTouchId = null;
+
         joystickLeft.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            const touch = e.touches[0];
+            leftTouchId = touch.identifier;
+            
             gameState.touch.left.active = true;
+            gameState.touch.left.vectorX = 0;
+            gameState.touch.left.vectorY = 0;
             leftKnob.style.transform = 'translate(-50%, -50%) scale(1.2)';
         });
 
         joystickLeft.addEventListener('touchmove', (e) => {
             e.preventDefault();
-            const touch = e.touches[0];
+            
+            let touch = null;
+            for (let i = 0; i < e.touches.length; i++) {
+                if (e.touches[i].identifier === leftTouchId) {
+                    touch = e.touches[i];
+                    break;
+                }
+            }
+            if (!touch) return;
+            
             const rect = joystickLeft.getBoundingClientRect();
             
-            // Получаем координаты касания относительно центра джойстика
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             
             let dx = touch.clientX - centerX;
             let dy = touch.clientY - centerY;
             
-            // Ограничиваем расстояние
             const maxDistance = rect.width / 2 - 25;
             const distance = Math.sqrt(dx*dx + dy*dy);
             
@@ -1632,10 +1667,8 @@
                 dy = (dy / distance) * maxDistance;
             }
             
-            // Двигаем ручку джойстика
             leftKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1.2)`;
             
-            // Вычисляем вектор движения (нормализованный)
             if (distance > 10) {
                 gameState.touch.left.vectorX = dx / maxDistance;
                 gameState.touch.left.vectorY = dy / maxDistance;
@@ -1647,33 +1680,50 @@
 
         joystickLeft.addEventListener('touchend', (e) => {
             e.preventDefault();
+            
+            let touchStillThere = false;
+            for (let i = 0; i < e.touches.length; i++) {
+                if (e.touches[i].identifier === leftTouchId) {
+                    touchStillThere = true;
+                    break;
+                }
+            }
+            
+            if (!touchStillThere) {
+                gameState.touch.left.active = false;
+                gameState.touch.left.vectorX = 0;
+                gameState.touch.left.vectorY = 0;
+                leftTouchId = null;
+                leftKnob.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+        });
+
+        joystickLeft.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
             gameState.touch.left.active = false;
             gameState.touch.left.vectorX = 0;
             gameState.touch.left.vectorY = 0;
+            leftTouchId = null;
             leftKnob.style.transform = 'translate(-50%, -50%) scale(1)';
         });
 
         joystickRight.addEventListener('touchstart', (e) => {
             e.preventDefault();
+            const touch = e.touches[0];
+            rightTouchId = touch.identifier;
+            
             gameState.touch.right.active = true;
             rightKnob.style.transform = 'translate(-50%, -50%) scale(1.2)';
             
-            const touch = e.touches[0];
             const rect = joystickRight.getBoundingClientRect();
-            
-            // Вычисляем угол от центра правого джойстика
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
             
             const dx = touch.clientX - centerX;
             const dy = touch.clientY - centerY;
             
-            // Угол для прицела (относительно игрока)
-            if (gameState.player) {
-                gameState.touch.right.angle = Math.atan2(dy, dx);
-            }
+            gameState.touch.right.angle = Math.atan2(dy, dx);
             
-            // Двигаем ручку
             const maxDistance = rect.width / 2 - 25;
             const distance = Math.sqrt(dx*dx + dy*dy);
             
@@ -1688,7 +1738,16 @@
 
         joystickRight.addEventListener('touchmove', (e) => {
             e.preventDefault();
-            const touch = e.touches[0];
+            
+            let touch = null;
+            for (let i = 0; i < e.touches.length; i++) {
+                if (e.touches[i].identifier === rightTouchId) {
+                    touch = e.touches[i];
+                    break;
+                }
+            }
+            if (!touch) return;
+            
             const rect = joystickRight.getBoundingClientRect();
             
             const centerX = rect.left + rect.width / 2;
@@ -1697,7 +1756,6 @@
             let dx = touch.clientX - centerX;
             let dy = touch.clientY - centerY;
             
-            // Ограничиваем расстояние
             const maxDistance = rect.width / 2 - 25;
             const distance = Math.sqrt(dx*dx + dy*dy);
             
@@ -1706,18 +1764,33 @@
                 dy = (dy / distance) * maxDistance;
             }
             
-            // Двигаем ручку
             rightKnob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1.2)`;
             
-            // Угол для прицела
-            if (gameState.player) {
-                gameState.touch.right.angle = Math.atan2(dy, dx);
-            }
+            gameState.touch.right.angle = Math.atan2(dy, dx);
         });
 
         joystickRight.addEventListener('touchend', (e) => {
             e.preventDefault();
+            
+            let touchStillThere = false;
+            for (let i = 0; i < e.touches.length; i++) {
+                if (e.touches[i].identifier === rightTouchId) {
+                    touchStillThere = true;
+                    break;
+                }
+            }
+            
+            if (!touchStillThere) {
+                gameState.touch.right.active = false;
+                rightTouchId = null;
+                rightKnob.style.transform = 'translate(-50%, -50%) scale(1)';
+            }
+        });
+
+        joystickRight.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
             gameState.touch.right.active = false;
+            rightTouchId = null;
             rightKnob.style.transform = 'translate(-50%, -50%) scale(1)';
         });
 
