@@ -2,48 +2,36 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TANKS // NEON WARFARE</title>
     <style>
-        /* TANKS // NEON WARFARE - ОСНОВНЫЕ СТИЛИ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
         }
-
+        
         body {
-            background: #000;
+            background: #0a0a0f;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            min-height: 100dvh;
             font-family: 'Courier New', monospace;
-            color: #00f5ff;
             touch-action: none;
             overflow: hidden;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
         }
-
+        
         #game-container {
             position: relative;
-            width: min(100vw, 100vh);
-            height: min(100vw, 100vh);
+            width: 100vw;
+            height: 100vh;
             background: #0a0a0f;
-            border: 2px solid #00f5ff;
-            box-shadow: 0 0 20px #00f5ff;
             overflow: hidden;
-            aspect-ratio: 1/1;
         }
-
+        
         .screen {
             position: absolute;
             top: 0;
@@ -57,158 +45,134 @@
             background: #0a0a0f;
             z-index: 10;
         }
-
+        
         .screen.active {
             display: flex;
         }
-
-        #game-canvas.screen.active {
-            display: block;
-            z-index: 1;
+        
+        #game-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            display: block;
             touch-action: none;
         }
-
+        
         h1, h2 {
             color: #ff0066;
             text-shadow: 0 0 10px #ff0066;
-            margin-bottom: clamp(10px, 5vh, 30px);
+            margin-bottom: 30px;
             text-align: center;
-            font-size: clamp(1.2em, 8vw, 2em);
+            font-size: 2em;
         }
-
+        
         .menu-buttons {
             display: flex;
             flex-direction: column;
-            gap: clamp(8px, 2vh, 15px);
+            gap: 15px;
             width: 80%;
             max-width: 300px;
         }
-
+        
         .neon-btn {
             background: transparent;
             border: 2px solid #00f5ff;
             color: #00f5ff;
-            padding: clamp(8px, 2vh, 12px) clamp(10px, 2vw, 20px);
-            font-size: clamp(0.9em, 5vw, 1.2em);
+            padding: 15px 20px;
+            font-size: 1.2em;
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
             box-shadow: 0 0 5px #00f5ff;
             transition: 0.2s;
             font-family: 'Courier New', monospace;
-            -webkit-tap-highlight-color: transparent;
         }
-
-        .neon-btn:hover {
+        
+        .neon-btn:active {
             background: #00f5ff;
             color: #0a0a0f;
-            box-shadow: 0 0 20px #00f5ff;
-            border-color: #ff0066;
-        }
-
-        .neon-btn:active {
             transform: scale(0.95);
         }
-
-        .neon-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
+        
         .back-btn {
-            margin-top: clamp(10px, 3vh, 20px);
             border-color: #ff0066;
             color: #ff0066;
             box-shadow: 0 0 5px #ff0066;
         }
-
-        .back-btn:hover {
-            background: #ff0066;
-            color: #0a0a0f;
-        }
-
+        
         #shop, #achievements {
             justify-content: flex-start;
-            padding-top: clamp(10px, 3vh, 20px);
+            padding-top: 20px;
         }
-
+        
         .stats-header {
-            font-size: clamp(1.2em, 6vw, 1.5em);
-            margin-bottom: clamp(10px, 2vh, 20px);
+            font-size: 1.5em;
+            margin-bottom: 20px;
             color: #ff0066;
         }
-
+        
         .shop-items, .achievement-list {
             width: 90%;
             max-width: 400px;
-            margin-bottom: clamp(10px, 2vh, 20px);
+            margin-bottom: 20px;
         }
-
+        
         .shop-item, .achievement-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid #00f5ff;
-            padding: clamp(5px, 1.5vh, 10px);
-            margin-bottom: clamp(5px, 1vh, 10px);
+            padding: 10px;
+            margin-bottom: 10px;
             color: #00f5ff;
-            font-size: clamp(0.8em, 4vw, 1em);
         }
-
-        .shop-item button, .achievement-item button {
-            padding: clamp(3px, 1vh, 5px) clamp(5px, 1.5vw, 10px);
-            font-size: clamp(0.7em, 3.5vw, 0.9em);
-        }
-
+        
         #hud {
             position: absolute;
-            top: clamp(5px, 1vh, 10px);
-            left: clamp(5px, 1vw, 10px);
-            right: clamp(5px, 1vw, 10px);
+            top: 10px;
+            left: 10px;
+            right: 10px;
             z-index: 20;
             color: #00f5ff;
             text-shadow: 0 0 5px #00f5ff;
             pointer-events: none;
             display: none;
-            font-size: clamp(0.7em, 4vw, 1em);
         }
-
+        
         #game-canvas.active ~ #hud {
             display: block;
         }
-
+        
         #hud-lives {
-            font-size: clamp(1.2em, 6vw, 1.5em);
-            margin-bottom: clamp(2px, 0.5vh, 5px);
+            font-size: 1.5em;
+            margin-bottom: 5px;
         }
-
+        
         #hud-stats {
             display: flex;
             justify-content: space-between;
-            margin-bottom: clamp(2px, 0.5vh, 5px);
-            flex-wrap: wrap;
-            gap: 5px;
+            margin-bottom: 5px;
         }
-
+        
         #hud-health-bar {
             width: 100%;
-            height: clamp(6px, 1.5vh, 10px);
-            background-color: #333;
+            height: 10px;
+            background: #333;
             border: 1px solid #ff0066;
         }
-
+        
         #hud-health-fill {
             height: 100%;
-            background-color: #00f5ff;
+            background: #00f5ff;
             transition: width 0.2s;
         }
-
-        /* Стили для джойстиков (создаются в JS, но оставим для надежности) */
-        #joystick-left, #joystick-right {
+        
+        /* Простые зоны для касания */
+        #touch-left {
             position: absolute;
+            left: 0;
             top: 0;
             width: 50%;
             height: 100%;
@@ -216,58 +180,44 @@
             pointer-events: auto;
             display: none;
         }
-
-        #joystick-left {
-            left: 0;
-            background: rgba(0, 245, 255, 0.05);
-        }
-
-        #joystick-right {
-            right: 0;
-            background: rgba(255, 0, 102, 0.05);
-        }
-
-        #left-indicator, #right-indicator {
+        
+        #touch-right {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
+            right: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 100;
+            pointer-events: auto;
+            display: none;
+        }
+        
+        /* Визуальные подсказки */
+        .touch-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            z-index: 101;
             pointer-events: none;
             display: none;
-            z-index: 101;
-            box-shadow: 0 0 20px currentColor;
         }
-
-        #left-indicator {
-            background: rgba(0, 245, 255, 0.3);
-            border: 2px solid #00f5ff;
-        }
-
-        #right-indicator {
-            background: rgba(255, 0, 102, 0.3);
-            border: 2px solid #ff0066;
-        }
-
+        
         @media (max-width: 768px) {
-            #joystick-left, #joystick-right {
+            #touch-left, #touch-right, .touch-hint {
                 display: block;
             }
             
-            h1 {
-                font-size: 1.5em;
-            }
-            
-            .neon-btn {
-                padding: 8px 10px;
-                font-size: 1em;
-            }
+            h1 { font-size: 1.5em; }
+            .neon-btn { padding: 12px; font-size: 1em; }
         }
     </style>
 </head>
 <body>
     <div id="game-container">
-        <!-- Лобби (Главное меню) -->
         <div id="lobby" class="screen active">
             <h1>TANKS // NEON WARFARE</h1>
             <div class="menu-buttons">
@@ -280,7 +230,6 @@
             </div>
         </div>
 
-        <!-- Меню выбора сложности (для CLASSIC) -->
         <div id="difficulty-menu" class="screen">
             <h2>ВЫБЕРИ СЛОЖНОСТЬ</h2>
             <div class="menu-buttons">
@@ -291,59 +240,41 @@
             </div>
         </div>
 
-        <!-- Магазин -->
         <div id="shop" class="screen">
             <h2>МАГАЗИН</h2>
             <div class="stats-header">💰 <span id="shop-money">0</span></div>
             <div class="shop-items">
-                <div class="shop-item" data-weapon="shotgun">
-                    <span>SHOTGUN</span> - 100💰 <button class="buy-btn neon-btn" data-weapon="shotgun" data-price="100">Купить</button>
-                </div>
-                <div class="shop-item" data-weapon="rocket">
-                    <span>ROCKET</span> - 200💰 <button class="buy-btn neon-btn" data-weapon="rocket" data-price="200">Купить</button>
-                </div>
-                <div class="shop-item" data-weapon="laser">
-                    <span>LASER</span> - 150💰 <button class="buy-btn neon-btn" data-weapon="laser" data-price="150">Купить</button>
-                </div>
+                <div class="shop-item"><span>SHOTGUN</span> - 100💰 <button class="buy-btn neon-btn" data-weapon="shotgun" data-price="100">Купить</button></div>
+                <div class="shop-item"><span>ROCKET</span> - 200💰 <button class="buy-btn neon-btn" data-weapon="rocket" data-price="200">Купить</button></div>
+                <div class="shop-item"><span>LASER</span> - 150💰 <button class="buy-btn neon-btn" data-weapon="laser" data-price="150">Купить</button></div>
             </div>
             <button id="back-from-shop" class="neon-btn back-btn">НАЗАД</button>
         </div>
 
-        <!-- Достижения -->
         <div id="achievements" class="screen">
             <h2>ДОСТИЖЕНИЯ</h2>
             <div class="achievement-list">
-                <div class="achievement-item" data-ach="firstBlood">
-                    <span>First Blood (убить 1 врага)</span> +50💰 <button class="claim-btn neon-btn" data-ach="firstBlood">Забрать</button>
-                </div>
-                <div class="achievement-item" data-ach="killer">
-                    <span>Killer (убить 10 врагов)</span> +100💰 <button class="claim-btn neon-btn" data-ach="killer">Забрать</button>
-                </div>
-                <div class="achievement-item" data-ach="waveMaster">
-                    <span>Wave Master (дойти до 5 волны)</span> +200💰 <button class="claim-btn neon-btn" data-ach="waveMaster">Забрать</button>
-                </div>
+                <div class="achievement-item"><span>First Blood (убить 1 врага)</span> +50💰 <button class="claim-btn neon-btn" data-ach="firstBlood">Забрать</button></div>
+                <div class="achievement-item"><span>Killer (убить 10 врагов)</span> +100💰 <button class="claim-btn neon-btn" data-ach="killer">Забрать</button></div>
+                <div class="achievement-item"><span>Wave Master (дойти до 5 волны)</span> +200💰 <button class="claim-btn neon-btn" data-ach="waveMaster">Забрать</button></div>
             </div>
             <button id="back-from-ach" class="neon-btn back-btn">НАЗАД</button>
         </div>
 
-        <!-- Игровой экран (холст) -->
         <canvas id="game-canvas" class="screen"></canvas>
 
-        <!-- Экран Game Over -->
         <div id="game-over" class="screen">
             <h2>GAME OVER</h2>
             <button id="restart-from-over" class="neon-btn">ЗАНОВО</button>
             <button id="menu-from-over" class="neon-btn">МЕНЮ</button>
         </div>
 
-        <!-- Экран Victory -->
         <div id="victory" class="screen">
             <h2>ПОБЕДА!</h2>
             <button id="restart-from-victory" class="neon-btn">ЗАНОВО</button>
             <button id="menu-from-victory" class="neon-btn">МЕНЮ</button>
         </div>
 
-        <!-- HUD (отображается поверх canvas) -->
         <div id="hud">
             <div id="hud-lives">❤️ ❤️ ❤️</div>
             <div id="hud-stats">
@@ -352,12 +283,902 @@
                 <span>💰 <span id="hud-money">0</span></span>
                 <span>⏱️ <span id="hud-timer">0:00</span></span>
             </div>
-            <div id="hud-health-bar">
-                <div id="hud-health-fill" style="width: 100%;"></div>
-            </div>
+            <div id="hud-health-bar"><div id="hud-health-fill" style="width:100%"></div></div>
         </div>
+
+        <!-- Простые зоны касания -->
+        <div id="touch-left"></div>
+        <div id="touch-right"></div>
+        <div class="touch-hint">👆 Слева - движение | Справа - прицел 👆</div>
     </div>
 
-    <script src="game.js"></script>
+    <script>
+        // ========== ДАННЫЕ КАМПАНИИ ==========
+        const campaignLevels = [
+            {id:1, hasBase:true, tasks:[
+                {type:"kill", target:5, reward:50, description:"Убить 5 врагов"},
+                {type:"destroyBase", target:1, reward:100, description:"Уничтожить базу врага"}
+            ]},
+            {id:2, hasBase:false, tasks:[
+                {type:"killFast", target:3, reward:75, description:"Убить 3 быстрых врага"},
+                {type:"survive", target:60, reward:100, description:"Выжить 60 секунд"}
+            ]},
+            {id:3, hasBase:true, tasks:[
+                {type:"killTank", target:2, reward:100, description:"Убить 2 танка"},
+                {type:"noBaseDamage", target:0, reward:150, description:"База без урона"}
+            ]},
+            {id:4, hasBase:false, tasks:[
+                {type:"accuracy", target:70, reward:120, description:"Точность 70%"},
+                {type:"kill", target:10, reward:100, description:"Убить 10 врагов"}
+            ]},
+            {id:5, hasBase:false, tasks:[
+                {type:"kill", target:15, reward:150, description:"Убить 15 врагов"},
+                {type:"noDeaths", target:0, reward:200, description:"Не умирать"}
+            ]},
+            {id:6, hasBase:false, tasks:[
+                {type:"survive", target:90, reward:150, description:"Выжить 90 секунд"},
+                {type:"kill", target:12, reward:120, description:"Убить 12 врагов"}
+            ]},
+            {id:7, hasBase:false, tasks:[
+                {type:"killTank", target:3, reward:150, description:"Убить 3 танка"},
+                {type:"killFast", target:4, reward:120, description:"Убить 4 быстрых"}
+            ]},
+            {id:8, hasBase:true, tasks:[
+                {type:"baseHealth", target:80, reward:200, description:"База >80%"},
+                {type:"kill", target:10, reward:100, description:"Убить 10 врагов"}
+            ]},
+            {id:9, hasBase:false, tasks:[
+                {type:"kill", target:20, reward:200, description:"Убить 20 врагов"},
+                {type:"timeLimit", target:120, reward:150, description:"Уложиться в 2 мин"}
+            ]},
+            {id:10, hasBase:true, tasks:[
+                {type:"killTank", target:4, reward:200, description:"Убить 4 танка"},
+                {type:"survive", target:120, reward:200, description:"Выжить 2 мин"},
+                {type:"noBaseDamage", target:0, reward:250, description:"База без урона"}
+            ]},
+            {id:11, hasBase:false, tasks:[
+                {type:"kill", target:25, reward:250, description:"Убить 25 врагов"},
+                {type:"killFast", target:5, reward:150, description:"Убить 5 быстрых"}
+            ]},
+            {id:12, hasBase:true, tasks:[
+                {type:"survive", target:150, reward:250, description:"Выжить 2.5 мин"},
+                {type:"destroyBase", target:1, reward:300, description:"Уничтожить базу"}
+            ]},
+            {id:13, hasBase:false, tasks:[
+                {type:"accuracy", target:80, reward:250, description:"Точность 80%"},
+                {type:"killTank", target:3, reward:180, description:"Убить 3 танка"}
+            ]},
+            {id:14, hasBase:false, tasks:[
+                {type:"kill", target:30, reward:300, description:"Убить 30 врагов"},
+                {type:"noDeaths", target:0, reward:350, description:"Не умирать"},
+                {type:"timeLimit", target:180, reward:200, description:"Уложиться в 3 мин"}
+            ]},
+            {id:15, hasBase:true, tasks:[
+                {type:"kill", target:40, reward:400, description:"Убить 40 врагов"},
+                {type:"killTank", target:5, reward:300, description:"Убить 5 танков"},
+                {type:"killFast", target:6, reward:250, description:"Убить 6 быстрых"},
+                {type:"destroyBase", target:1, reward:500, description:"Уничтожить базу"}
+            ]}
+        ];
+
+        // ========== ИГРОВЫЕ ДАННЫЕ ==========
+        let gameData = {
+            money: 500,
+            purchasedWeapons: [],
+            campaignProgress: 1,
+            completedLevels: [],
+            achievements: {
+                firstBlood: {claimed: false, progress: 0, target: 1, reward: 50},
+                killer: {claimed: false, progress: 0, target: 10, reward: 100},
+                waveMaster: {claimed: false, progress: 0, target: 5, reward: 200}
+            }
+        };
+
+        // ========== СОСТОЯНИЕ ИГРЫ ==========
+        let gameState = {
+            active: false,
+            mode: null,
+            difficulty: 'medium',
+            player: null,
+            enemies: [],
+            enemyBullets: [],
+            bullets: [],
+            playerBase: null,
+            enemyBase: null,
+            kills: 0,
+            killsByType: {normal: 0, fast: 0, tank: 0},
+            shotsFired: 0,
+            shotsHit: 0,
+            wave: 1,
+            killsThisWave: 0,
+            timer: 0,
+            gameOver: false,
+            victory: false,
+            paused: false,
+            survivalScore: 0,
+            campaignLevel: 1,
+            campaignTasks: [],
+            defenseTime: 300,
+            defenseDeaths: 0,
+            keys: {w: false, a: false, s: false, d: false},
+            mouse: {x: 400, y: 300, down: false},
+            // Простое сенсорное управление
+            touch: {
+                left: {active: false, x: 0, y: 0},
+                right: {active: false, x: 0, y: 0}
+            },
+            lastShot: 0,
+            deaths: 0,
+            baseInitialHp: 400
+        };
+
+        // ========== ЭЛЕМЕНТЫ ==========
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const hud = document.getElementById('hud');
+        const screens = document.querySelectorAll('.screen');
+        const touchLeft = document.getElementById('touch-left');
+        const touchRight = document.getElementById('touch-right');
+
+        // ========== ЗАГРУЗКА ДАННЫХ ==========
+        function loadGameData() {
+            const saved = localStorage.getItem('tanksNeonData');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.money) gameData.money = parsed.money;
+                    if (parsed.purchasedWeapons) gameData.purchasedWeapons = parsed.purchasedWeapons;
+                    if (parsed.campaignProgress) gameData.campaignProgress = parsed.campaignProgress;
+                    if (parsed.completedLevels) gameData.completedLevels = parsed.completedLevels;
+                } catch(e) {}
+            }
+            updateShopUI();
+            updateAchievementsUI();
+        }
+
+        function saveGameData() {
+            localStorage.setItem('tanksNeonData', JSON.stringify(gameData));
+        }
+
+        // ========== UI ==========
+        function showScreen(screenId) {
+            screens.forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            if (screenId === 'game-canvas') {
+                hud.style.display = 'block';
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gameState.mouse.x = canvas.width/2;
+                gameState.mouse.y = canvas.height/2;
+            } else {
+                hud.style.display = 'none';
+            }
+        }
+
+        function updateShopUI() {
+            document.getElementById('shop-money').innerText = gameData.money;
+        }
+
+        function updateAchievementsUI() {}
+
+        // ========== РЕЖИМЫ ==========
+        function startClassic(diff) {
+            stopAll();
+            gameState = {
+                active: true, mode: 'classic', difficulty: diff,
+                player: {x: canvas.width/2, y: canvas.height-100, hp: 100, maxHp: 100, lives: 3, angle: 0, speed: 3},
+                enemies: [], enemyBullets: [], bullets: [],
+                playerBase: {x: canvas.width/2, y: canvas.height-50, hp: 300, maxHp: 300},
+                enemyBase: {x: canvas.width/2, y: 50, hp: 300, maxHp: 300},
+                kills: 0, killsByType: {normal:0, fast:0, tank:0},
+                shotsFired: 0, shotsHit: 0, wave: 1, killsThisWave: 0,
+                timer: 0, gameOver: false, victory: false, paused: false,
+                keys: {w:false, a:false, s:false, d:false},
+                mouse: {x: canvas.width/2, y: canvas.height/2, down: false},
+                touch: {left: {active: false, x:0, y:0}, right: {active: false, x:0, y:0}},
+                lastShot: 0, deaths: 0, baseInitialHp: 300
+            };
+            startIntervals(diff === 'easy' ? 2500 : diff === 'hard' ? 1500 : 2000);
+            showScreen('game-canvas');
+        }
+
+        function startSurvival() {
+            stopAll();
+            gameState = {
+                active: true, mode: 'survival',
+                player: {x: canvas.width/2, y: canvas.height/2, hp: 100, maxHp: 100, lives: 5, angle: 0, speed: 3.5},
+                enemies: [], enemyBullets: [], bullets: [],
+                playerBase: null, enemyBase: null,
+                kills: 0, killsByType: {normal:0, fast:0, tank:0},
+                shotsFired: 0, shotsHit: 0, wave: 1, killsThisWave: 0,
+                timer: 0, gameOver: false, victory: false, paused: false,
+                survivalScore: 0,
+                keys: {w:false, a:false, s:false, d:false},
+                mouse: {x: canvas.width/2, y: canvas.height/2, down: false},
+                touch: {left: {active: false, x:0, y:0}, right: {active: false, x:0, y:0}},
+                lastShot: 0, deaths: 0
+            };
+            startIntervals(1800);
+            showScreen('game-canvas');
+        }
+
+        function startCampaign(levelNum) {
+            const level = campaignLevels.find(l => l.id === levelNum);
+            if (!level) return;
+            stopAll();
+            gameState = {
+                active: true, mode: 'campaign', campaignLevel: levelNum,
+                campaignTasks: level.tasks.map(t => ({...t, completed: false})),
+                player: {x: canvas.width/2, y: canvas.height-100, hp: 120, maxHp: 120, lives: 3, angle: 0, speed: 2.8},
+                enemies: [], enemyBullets: [], bullets: [],
+                playerBase: level.hasBase ? {x: canvas.width/2, y: canvas.height-50, hp: 400, maxHp: 400} : null,
+                enemyBase: level.hasBase ? {x: canvas.width/2, y: 50, hp: 400, maxHp: 400} : null,
+                kills: 0, killsByType: {normal:0, fast:0, tank:0},
+                shotsFired: 0, shotsHit: 0, wave: 1, killsThisWave: 0,
+                timer: 0, gameOver: false, victory: false, paused: false,
+                keys: {w:false, a:false, s:false, d:false},
+                mouse: {x: canvas.width/2, y: canvas.height/2, down: false},
+                touch: {left: {active: false, x:0, y:0}, right: {active: false, x:0, y:0}},
+                lastShot: 0, deaths: 0, baseInitialHp: 400
+            };
+            startIntervals(2000);
+            showScreen('game-canvas');
+        }
+
+        function startDefense() {
+            stopAll();
+            gameState = {
+                active: true, mode: 'defense',
+                player: {x: canvas.width/2, y: canvas.height-100, hp: 100, maxHp: 100, lives: 3, angle: 0, speed: 3},
+                enemies: [], enemyBullets: [], bullets: [],
+                playerBase: {x: canvas.width/2, y: canvas.height-50, hp: 500, maxHp: 500},
+                enemyBase: null,
+                kills: 0, killsByType: {normal:0, fast:0, tank:0},
+                shotsFired: 0, shotsHit: 0, wave: 1, killsThisWave: 0,
+                timer: 0, gameOver: false, victory: false, paused: false,
+                defenseTime: 300, defenseDeaths: 0,
+                keys: {w:false, a:false, s:false, d:false},
+                mouse: {x: canvas.width/2, y: canvas.height/2, down: false},
+                touch: {left: {active: false, x:0, y:0}, right: {active: false, x:0, y:0}},
+                lastShot: 0, deaths: 0
+            };
+            startIntervals(1800);
+            showScreen('game-canvas');
+        }
+
+        // ========== ИНТЕРВАЛЫ ==========
+        let gameInterval, timerInterval, spawnInterval;
+
+        function startIntervals(spawnSpeed) {
+            gameInterval = setInterval(gameLoop, 1000/60);
+            timerInterval = setInterval(() => {
+                if (gameState.active && !gameState.paused && !gameState.gameOver && !gameState.victory) {
+                    gameState.timer++;
+                    if (gameState.mode === 'survival') {
+                        gameState.survivalScore = gameState.timer * 10 + gameState.kills * 50;
+                    }
+                    if (gameState.mode === 'defense' && gameState.timer >= gameState.defenseTime) {
+                        gameState.victory = true;
+                    }
+                }
+            }, 1000);
+            spawnInterval = setInterval(spawnEnemy, spawnSpeed);
+        }
+
+        function stopAll() {
+            if (gameInterval) clearInterval(gameInterval);
+            if (timerInterval) clearInterval(timerInterval);
+            if (spawnInterval) clearInterval(spawnInterval);
+        }
+
+        // ========== СПАВН ВРАГОВ ==========
+        function spawnEnemy() {
+            if (!gameState.active || gameState.paused || gameState.gameOver || gameState.victory) return;
+            
+            const type = Math.random() < 0.6 ? 0 : (Math.random() < 0.5 ? 1 : 2);
+            let hp, speed, damage, fireRate, color, typeName;
+            
+            if (type === 0) { hp = 45; speed = 1; damage = 8; fireRate = 2000; color = '#ff0066'; typeName = 'normal'; }
+            else if (type === 1) { hp = 25; speed = 2; damage = 5; fireRate = 1500; color = '#ffff00'; typeName = 'fast'; }
+            else { hp = 90; speed = 0.6; damage = 15; fireRate = 2500; color = '#aa00ff'; typeName = 'tank'; }
+
+            gameState.enemies.push({
+                x: Math.random() * (canvas.width - 100) + 50,
+                y: 50,
+                hp, maxHp: hp, speed, damage, fireRate,
+                color, typeName,
+                angle: 0,
+                lastShot: Date.now()
+            });
+        }
+
+        // ========== ИГРОВОЙ ЦИКЛ ==========
+        function gameLoop() {
+            if (!gameState.active || gameState.paused) return;
+            
+            if (gameState.gameOver) { showScreen('game-over'); stopAll(); return; }
+            if (gameState.victory) { 
+                if (gameState.mode === 'campaign') {
+                    if (!gameData.completedLevels.includes(gameState.campaignLevel)) {
+                        gameData.completedLevels.push(gameState.campaignLevel);
+                        if (gameState.campaignLevel + 1 <= 15) {
+                            gameData.campaignProgress = Math.max(gameData.campaignProgress, gameState.campaignLevel + 1);
+                        }
+                    }
+                    let total = 0;
+                    gameState.campaignTasks.forEach(t => { if (t.completed) total += t.reward; });
+                    gameData.money += total;
+                    saveGameData();
+                }
+                showScreen('victory'); stopAll(); return; 
+            }
+
+            updatePlayer();
+            updateEnemies();
+            updateEnemyShooting();
+            updateBullets();
+            updateEnemyBullets();
+            checkCollisions();
+            checkCampaignTasks();
+            updateWaveAndBase();
+            updateHUD();
+            draw();
+        }
+
+        // ========== УПРАВЛЕНИЕ ИГРОКОМ ==========
+        function updatePlayer() {
+            const p = gameState.player;
+            if (!p) return;
+            
+            // Клавиатура
+            if (gameState.keys.w) p.y -= p.speed;
+            if (gameState.keys.s) p.y += p.speed;
+            if (gameState.keys.a) p.x -= p.speed;
+            if (gameState.keys.d) p.x += p.speed;
+            
+            // Сенсорное управление - движение
+            if (gameState.touch.left.active) {
+                const dx = gameState.touch.left.x - p.x;
+                const dy = gameState.touch.left.y - p.y;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist > 10) {
+                    p.x += (dx / dist) * p.speed;
+                    p.y += (dy / dist) * p.speed;
+                }
+            }
+            
+            // Границы
+            p.x = Math.max(25, Math.min(canvas.width - 25, p.x));
+            p.y = Math.max(25, Math.min(canvas.height - 25, p.y));
+
+            // Прицел
+            let targetX = gameState.mouse.x;
+            let targetY = gameState.mouse.y;
+            
+            if (gameState.touch.right.active) {
+                targetX = gameState.touch.right.x;
+                targetY = gameState.touch.right.y;
+            }
+            
+            p.angle = Math.atan2(targetY - p.y, targetX - p.x);
+
+            // Стрельба
+            const now = Date.now();
+            if ((gameState.mouse.down || gameState.touch.right.active) && now - gameState.lastShot > 200) {
+                gameState.lastShot = now;
+                gameState.shotsFired++;
+                gameState.bullets.push({
+                    x: p.x + Math.cos(p.angle) * 20,
+                    y: p.y + Math.sin(p.angle) * 20,
+                    vx: Math.cos(p.angle) * 8,
+                    vy: Math.sin(p.angle) * 8,
+                    damage: 15, color: '#00f5ff'
+                });
+            }
+        }
+
+        // ========== ВРАГИ ==========
+        function updateEnemies() {
+            for (let i = gameState.enemies.length - 1; i >= 0; i--) {
+                const e = gameState.enemies[i];
+                
+                let targetX, targetY;
+                if (gameState.mode === 'survival') {
+                    targetX = gameState.player.x; targetY = gameState.player.y;
+                } else if (gameState.mode === 'defense') {
+                    targetX = gameState.playerBase.x; targetY = gameState.playerBase.y;
+                } else {
+                    targetX = gameState.playerBase ? gameState.playerBase.x : gameState.player.x;
+                    targetY = gameState.playerBase ? gameState.playerBase.y : gameState.player.y;
+                }
+                
+                e.angle = Math.atan2(gameState.player.y - e.y, gameState.player.x - e.x);
+                
+                const dx = targetX - e.x, dy = targetY - e.y;
+                const len = Math.sqrt(dx*dx + dy*dy);
+                
+                if (len > 30) {
+                    e.x += (dx / len) * e.speed;
+                    e.y += (dy / len) * e.speed;
+                }
+                
+                if (gameState.playerBase && Math.hypot(e.x - gameState.playerBase.x, e.y - gameState.playerBase.y) < 30) {
+                    gameState.playerBase.hp -= e.damage;
+                    gameState.enemies.splice(i, 1);
+                    if (gameState.playerBase.hp <= 0) gameState.gameOver = true;
+                }
+            }
+        }
+
+        function updateEnemyShooting() {
+            const now = Date.now();
+            for (let e of gameState.enemies) {
+                if (now - e.lastShot > e.fireRate) {
+                    e.lastShot = now;
+                    const dx = gameState.player.x - e.x;
+                    const dy = gameState.player.y - e.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 400) {
+                        gameState.enemyBullets.push({
+                            x: e.x + (dx/dist) * 20,
+                            y: e.y + (dy/dist) * 20,
+                            vx: (dx/dist) * 5,
+                            vy: (dy/dist) * 5,
+                            damage: e.damage,
+                            color: e.color
+                        });
+                    }
+                }
+            }
+        }
+
+        // ========== ПУЛИ ==========
+        function updateBullets() {
+            for (let i = gameState.bullets.length - 1; i >= 0; i--) {
+                const b = gameState.bullets[i];
+                b.x += b.vx; b.y += b.vy;
+                
+                if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+                    gameState.bullets.splice(i, 1);
+                    continue;
+                }
+                
+                let hit = false;
+                for (let j = gameState.enemies.length - 1; j >= 0; j--) {
+                    const e = gameState.enemies[j];
+                    if (Math.hypot(b.x - e.x, b.y - e.y) < 20) {
+                        e.hp -= b.damage;
+                        gameState.bullets.splice(i, 1);
+                        gameState.shotsHit++;
+                        
+                        if (e.hp <= 0) {
+                            gameState.enemies.splice(j, 1);
+                            gameState.kills++;
+                            gameState.killsByType[e.typeName]++;
+                            gameState.killsThisWave++;
+                            gameData.money += 10;
+                        }
+                        hit = true;
+                        break;
+                    }
+                }
+                if (hit) continue;
+
+                if (gameState.enemyBase && Math.hypot(b.x - gameState.enemyBase.x, b.y - gameState.enemyBase.y) < 35) {
+                    gameState.enemyBase.hp -= b.damage;
+                    gameState.bullets.splice(i, 1);
+                    if (gameState.mode === 'classic' && gameState.enemyBase.hp <= 0) {
+                        gameState.victory = true;
+                    }
+                }
+            }
+        }
+
+        function updateEnemyBullets() {
+            for (let i = gameState.enemyBullets.length - 1; i >= 0; i--) {
+                const b = gameState.enemyBullets[i];
+                b.x += b.vx; b.y += b.vy;
+                
+                if (b.x < 0 || b.x > canvas.width || b.y < 0 || b.y > canvas.height) {
+                    gameState.enemyBullets.splice(i, 1);
+                    continue;
+                }
+                
+                if (Math.hypot(b.x - gameState.player.x, b.y - gameState.player.y) < 20) {
+                    gameState.player.hp -= b.damage;
+                    gameState.enemyBullets.splice(i, 1);
+                    
+                    if (gameState.player.hp <= 0) {
+                        gameState.player.lives--;
+                        gameState.deaths++;
+                        if (gameState.player.lives <= 0) {
+                            gameState.gameOver = true;
+                        } else {
+                            gameState.player.hp = gameState.player.maxHp;
+                        }
+                    }
+                    continue;
+                }
+                
+                if (gameState.playerBase && Math.hypot(b.x - gameState.playerBase.x, b.y - gameState.playerBase.y) < 35) {
+                    gameState.playerBase.hp -= b.damage;
+                    gameState.enemyBullets.splice(i, 1);
+                    if (gameState.playerBase.hp <= 0) gameState.gameOver = true;
+                }
+            }
+        }
+
+        // ========== КОЛЛИЗИИ ==========
+        function checkCollisions() {
+            for (let i = gameState.enemies.length - 1; i >= 0; i--) {
+                const e = gameState.enemies[i];
+                if (Math.hypot(e.x - gameState.player.x, e.y - gameState.player.y) < 30) {
+                    gameState.player.hp -= e.damage * 0.5;
+                    gameState.enemies.splice(i, 1);
+                    if (gameState.player.hp <= 0) {
+                        gameState.player.lives--;
+                        gameState.deaths++;
+                        if (gameState.player.lives <= 0) {
+                            gameState.gameOver = true;
+                        } else {
+                            gameState.player.hp = gameState.player.maxHp;
+                        }
+                    }
+                }
+            }
+        }
+
+        // ========== ЗАДАНИЯ КАМПАНИИ ==========
+        function checkCampaignTasks() {
+            if (gameState.mode !== 'campaign') return;
+            
+            gameState.campaignTasks.forEach(task => {
+                if (task.completed) return;
+                
+                switch(task.type) {
+                    case 'kill': if (gameState.kills >= task.target) task.completed = true; break;
+                    case 'killFast': if (gameState.killsByType.fast >= task.target) task.completed = true; break;
+                    case 'killTank': if (gameState.killsByType.tank >= task.target) task.completed = true; break;
+                    case 'survive': if (gameState.timer >= task.target) task.completed = true; break;
+                    case 'destroyBase': if (gameState.enemyBase && gameState.enemyBase.hp <= 0) task.completed = true; break;
+                    case 'noBaseDamage': if (gameState.playerBase && gameState.playerBase.hp === gameState.baseInitialHp) task.completed = true; break;
+                    case 'accuracy': {
+                        const acc = gameState.shotsFired > 0 ? (gameState.shotsHit / gameState.shotsFired) * 100 : 0;
+                        if (acc >= task.target) task.completed = true;
+                        break;
+                    }
+                    case 'noDeaths': if (gameState.deaths === 0) task.completed = true; break;
+                    case 'baseHealth': if (gameState.playerBase) {
+                        const hpPercent = (gameState.playerBase.hp / gameState.playerBase.maxHp) * 100;
+                        if (hpPercent >= task.target) task.completed = true;
+                    } break;
+                    case 'timeLimit': if (gameState.timer <= task.target) task.completed = true; break;
+                }
+            });
+            
+            const allCompleted = gameState.campaignTasks.every(t => t.completed);
+            if (allCompleted) gameState.victory = true;
+        }
+
+        // ========== ВОЛНЫ ==========
+        function updateWaveAndBase() {
+            if (gameState.mode !== 'survival' && gameState.mode !== 'defense') {
+                if (gameState.killsThisWave >= 5) {
+                    gameState.wave++;
+                    gameState.killsThisWave = 0;
+                    gameData.money += 50;
+                }
+            }
+        }
+
+        // ========== HUD ==========
+        function updateHUD() {
+            if (!gameState.player) return;
+            
+            document.getElementById('hud-lives').innerText = '❤️'.repeat(gameState.player.lives);
+            document.getElementById('hud-kills').innerText = gameState.kills;
+            document.getElementById('hud-money').innerText = gameData.money;
+            
+            const mins = Math.floor(gameState.timer / 60);
+            const secs = gameState.timer % 60;
+            document.getElementById('hud-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            
+            const hpPercent = (gameState.player.hp / gameState.player.maxHp) * 100;
+            document.getElementById('hud-health-fill').style.width = `${Math.max(0, hpPercent)}%`;
+        }
+
+        // ========== ОТРИСОВКА ==========
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Сетка
+            ctx.strokeStyle = '#00f5ff20';
+            for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.strokeStyle = '#00f5ff10'; ctx.stroke();
+            }
+            for (let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.strokeStyle = '#ff006610'; ctx.stroke();
+            }
+            
+            // Базы
+            if (gameState.playerBase) {
+                ctx.shadowColor = '#00f5ff'; ctx.shadowBlur = 20;
+                ctx.fillStyle = '#00f5ff'; ctx.fillRect(gameState.playerBase.x-35, gameState.playerBase.y-20, 70, 40);
+                ctx.fillStyle = 'white'; ctx.fillRect(gameState.playerBase.x-25, gameState.playerBase.y-10, 10, 20);
+                ctx.fillRect(gameState.playerBase.x+15, gameState.playerBase.y-10, 10, 20);
+                ctx.strokeStyle = 'white'; ctx.beginPath(); ctx.moveTo(gameState.playerBase.x, gameState.playerBase.y-20);
+                ctx.lineTo(gameState.playerBase.x, gameState.playerBase.y-40); ctx.stroke();
+                ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(gameState.playerBase.x, gameState.playerBase.y-45, 5, 0, 2*Math.PI); ctx.fill();
+            }
+            
+            if (gameState.enemyBase) {
+                ctx.shadowColor = '#ff0066'; ctx.shadowBlur = 20;
+                ctx.fillStyle = '#ff0066'; ctx.fillRect(gameState.enemyBase.x-35, gameState.enemyBase.y-20, 70, 40);
+                ctx.fillStyle = 'white'; ctx.fillRect(gameState.enemyBase.x-25, gameState.enemyBase.y-10, 10, 20);
+                ctx.fillRect(gameState.enemyBase.x+15, gameState.enemyBase.y-10, 10, 20);
+                ctx.strokeStyle = 'white'; ctx.beginPath(); ctx.moveTo(gameState.enemyBase.x, gameState.enemyBase.y-20);
+                ctx.lineTo(gameState.enemyBase.x, gameState.enemyBase.y-40); ctx.stroke();
+                ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(gameState.enemyBase.x, gameState.enemyBase.y-45, 5, 0, 2*Math.PI); ctx.fill();
+            }
+            
+            // Игрок
+            const p = gameState.player;
+            ctx.shadowColor = '#00f5ff'; ctx.shadowBlur = 15;
+            ctx.fillStyle = '#0088ff';
+            ctx.beginPath(); ctx.ellipse(p.x-12, p.y, 8, 14, 0, 0, 2*Math.PI); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(p.x+12, p.y, 8, 14, 0, 0, 2*Math.PI); ctx.fill();
+            ctx.fillStyle = '#00f5ff';
+            ctx.beginPath(); ctx.ellipse(p.x, p.y, 18, 14, 0, 0, 2*Math.PI); ctx.fill();
+            
+            ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+            ctx.fillStyle = '#00f5ff'; ctx.beginPath(); ctx.ellipse(0, 0, 12, 10, 0, 0, 2*Math.PI); ctx.fill();
+            ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(0, 0, 4, 0, 2*Math.PI); ctx.fill();
+            ctx.strokeStyle = 'white'; ctx.lineWidth = 5;
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(20, 0); ctx.stroke();
+            ctx.fillStyle = '#00f5ff'; ctx.beginPath(); ctx.arc(22, 0, 4, 0, 2*Math.PI); ctx.fill();
+            ctx.restore();
+            
+            // Враги
+            gameState.enemies.forEach(e => {
+                ctx.shadowColor = e.color; ctx.shadowBlur = 15;
+                ctx.fillStyle = '#8800cc';
+                ctx.beginPath(); ctx.ellipse(e.x-12, e.y, 8, 14, 0, 0, 2*Math.PI); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(e.x+12, e.y, 8, 14, 0, 0, 2*Math.PI); ctx.fill();
+                ctx.fillStyle = e.color;
+                ctx.beginPath(); ctx.ellipse(e.x, e.y, 18, 14, 0, 0, 2*Math.PI); ctx.fill();
+                
+                ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(e.angle);
+                ctx.fillStyle = e.color; ctx.beginPath(); ctx.ellipse(0, 0, 12, 10, 0, 0, 2*Math.PI); ctx.fill();
+                ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(0, 0, 4, 0, 2*Math.PI); ctx.fill();
+                ctx.strokeStyle = '#8800cc'; ctx.lineWidth = 5;
+                ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(20, 0); ctx.stroke();
+                ctx.fillStyle = '#8800cc'; ctx.beginPath(); ctx.arc(22, 0, 4, 0, 2*Math.PI); ctx.fill();
+                ctx.restore();
+                
+                // Полоска здоровья
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = '#333';
+                ctx.fillRect(e.x-20, e.y-30, 40, 4);
+                let healthColor = '#00ff00';
+                if (e.hp/e.maxHp < 0.6) healthColor = '#ffff00';
+                if (e.hp/e.maxHp < 0.3) healthColor = '#ff0000';
+                ctx.fillStyle = healthColor;
+                ctx.fillRect(e.x-20, e.y-30, 40 * (e.hp/e.maxHp), 4);
+            });
+            
+            // Пули
+            gameState.bullets.forEach(b => {
+                ctx.shadowColor = b.color; ctx.shadowBlur = 15;
+                ctx.fillStyle = b.color;
+                ctx.beginPath(); ctx.arc(b.x, b.y, 6, 0, 2*Math.PI); ctx.fill();
+                ctx.shadowBlur = 8; ctx.fillStyle = 'white';
+                ctx.beginPath(); ctx.arc(b.x, b.y, 3, 0, 2*Math.PI); ctx.fill();
+            });
+            
+            gameState.enemyBullets.forEach(b => {
+                ctx.shadowColor = b.color; ctx.shadowBlur = 12;
+                ctx.fillStyle = b.color;
+                ctx.beginPath(); ctx.arc(b.x, b.y, 5, 0, 2*Math.PI); ctx.fill();
+                ctx.shadowBlur = 5; ctx.fillStyle = 'white';
+                ctx.beginPath(); ctx.arc(b.x, b.y, 2, 0, 2*Math.PI); ctx.fill();
+            });
+            
+            ctx.shadowBlur = 0;
+            
+            // Режим игры
+            ctx.font = 'bold 24px "Courier New"';
+            ctx.fillStyle = '#ff0066';
+            ctx.shadowColor = '#ff0066'; ctx.shadowBlur = 15;
+            let modeText = '';
+            switch(gameState.mode) {
+                case 'classic': modeText = 'CLASSIC'; break;
+                case 'survival': modeText = 'SURVIVAL'; break;
+                case 'campaign': modeText = `LVL ${gameState.campaignLevel}`; break;
+                case 'defense': modeText = 'DEFENSE'; break;
+            }
+            ctx.fillText(modeText, 10, 50);
+            
+            // Задания
+            if (gameState.mode === 'campaign' && gameState.campaignTasks) {
+                ctx.shadowColor = '#00ff00'; ctx.shadowBlur = 10;
+                ctx.font = 'bold 14px "Courier New"';
+                ctx.fillStyle = '#00ff00';
+                ctx.textAlign = 'right';
+                let y = 80;
+                ctx.fillText('ЗАДАНИЯ:', canvas.width-10, y); y += 25;
+                gameState.campaignTasks.forEach(t => {
+                    ctx.fillText(`${t.completed ? '✅' : '⭕'} ${t.description}`, canvas.width-10, y);
+                    y += 20;
+                });
+                ctx.textAlign = 'left';
+            }
+        }
+
+        // ========== УПРАВЛЕНИЕ ==========
+        document.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if ('wasd'.includes(key)) {
+                gameState.keys[key] = true;
+                e.preventDefault();
+            }
+            if (key === 'escape' && gameState.active) gameState.paused = !gameState.paused;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            const key = e.key.toLowerCase();
+            if ('wasd'.includes(key)) {
+                gameState.keys[key] = false;
+                e.preventDefault();
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            gameState.mouse.x = (e.clientX - rect.left) * (canvas.width / rect.width);
+            gameState.mouse.y = (e.clientY - rect.top) * (canvas.height / rect.height);
+        });
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (e.button === 0) gameState.mouse.down = true;
+        });
+
+        canvas.addEventListener('mouseup', (e) => {
+            if (e.button === 0) gameState.mouse.down = false;
+        });
+
+        // ========== СЕНСОРНОЕ УПРАВЛЕНИЕ ==========
+        touchLeft.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            gameState.touch.left.active = true;
+            gameState.touch.left.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            gameState.touch.left.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        });
+
+        touchLeft.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            gameState.touch.left.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            gameState.touch.left.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        });
+
+        touchLeft.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            gameState.touch.left.active = false;
+        });
+
+        touchRight.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            gameState.touch.right.active = true;
+            gameState.touch.right.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            gameState.touch.right.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        });
+
+        touchRight.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = canvas.getBoundingClientRect();
+            gameState.touch.right.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+            gameState.touch.right.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
+        });
+
+        touchRight.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            gameState.touch.right.active = false;
+        });
+
+        canvas.addEventListener('touchstart', (e) => e.preventDefault());
+        canvas.addEventListener('touchmove', (e) => e.preventDefault());
+        canvas.addEventListener('touchend', (e) => e.preventDefault());
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGameData();
+
+            document.getElementById('btn-classic').onclick = () => showScreen('difficulty-menu');
+            document.getElementById('btn-survival').onclick = () => startSurvival();
+            document.getElementById('btn-campaign').onclick = showCampaignMenu;
+            document.getElementById('btn-defense').onclick = () => startDefense();
+            document.getElementById('btn-shop').onclick = () => { updateShopUI(); showScreen('shop'); };
+            document.getElementById('btn-achievements').onclick = () => { updateAchievementsUI(); showScreen('achievements'); };
+
+            document.getElementById('diff-easy').onclick = () => startClassic('easy');
+            document.getElementById('diff-medium').onclick = () => startClassic('medium');
+            document.getElementById('diff-hard').onclick = () => startClassic('hard');
+            document.getElementById('back-from-diff').onclick = () => showScreen('lobby');
+
+            document.getElementById('back-from-shop').onclick = () => showScreen('lobby');
+            document.getElementById('back-from-ach').onclick = () => showScreen('lobby');
+
+            document.querySelectorAll('.buy-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const weapon = btn.dataset.weapon;
+                    const price = parseInt(btn.dataset.price);
+                    if (gameData.money >= price && !gameData.purchasedWeapons.includes(weapon)) {
+                        gameData.money -= price;
+                        gameData.purchasedWeapons.push(weapon);
+                        saveGameData();
+                        updateShopUI();
+                    }
+                };
+            });
+
+            document.querySelectorAll('.claim-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    const ach = gameData.achievements[btn.dataset.ach];
+                    if (ach && !ach.claimed && ach.progress >= ach.target) {
+                        ach.claimed = true;
+                        gameData.money += ach.reward;
+                        saveGameData();
+                        updateShopUI();
+                    }
+                };
+            });
+
+            document.getElementById('restart-from-over').onclick = () => {
+                if (gameState.mode === 'survival') startSurvival();
+                else if (gameState.mode === 'campaign') startCampaign(gameState.campaignLevel);
+                else if (gameState.mode === 'defense') startDefense();
+                else startClassic('medium');
+            };
+
+            document.getElementById('restart-from-victory').onclick = () => {
+                if (gameState.mode === 'survival') startSurvival();
+                else if (gameState.mode === 'campaign') startCampaign(gameState.campaignLevel);
+                else if (gameState.mode === 'defense') startDefense();
+                else startClassic('medium');
+            };
+
+            document.getElementById('menu-from-over').onclick = () => showScreen('lobby');
+            document.getElementById('menu-from-victory').onclick = () => showScreen('lobby');
+        });
+
+        function showCampaignMenu() {
+            const menu = document.createElement('div');
+            menu.className = 'screen active';
+            menu.innerHTML = `
+                <h2>ВЫБЕРИ УРОВЕНЬ</h2>
+                <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:20px;">
+                    ${Array.from({length:15}, (_,i) => i+1).map(l => {
+                        const avail = l <= gameData.campaignProgress;
+                        return `<button class="neon-btn" style="border-color:${avail?'#00f5ff':'#ff0066'};color:${avail?'#00f5ff':'#ff0066'}" ${!avail?'disabled':''} onclick="selectLevel(${l})">УРОВЕНЬ ${l}</button>`;
+                    }).join('')}
+                </div>
+                <button class="neon-btn back-btn" onclick="this.parentElement.remove();showScreen('lobby')">НАЗАД</button>
+            `;
+            document.getElementById('game-container').appendChild(menu);
+        }
+
+        window.selectLevel = function(level) {
+            document.querySelector('.screen.active')?.remove();
+            startCampaign(level);
+        };
+    </script>
 </body>
 </html>
